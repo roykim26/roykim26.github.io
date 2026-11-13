@@ -1,0 +1,83 @@
+<dialog class="search-dialog" id="site-search" aria-labelledby="search-title">
+  <div class="search-dialog-head">
+    <span class="mono" id="search-title">Search essays</span>
+    <button class="icon-btn" type="button" data-search-close aria-label="Close search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19"></path>
+      </svg>
+    </button>
+  </div>
+  <div class="search-dialog-body">
+    <div id="pagefind-search"></div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('site-search') as HTMLDialogElement | null;
+  const mount = document.getElementById('pagefind-search');
+  let loaded = false;
+
+  const loadCss = (): void => {
+    if (document.querySelector('link[data-pagefind-ui]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/pagefind/pagefind-ui.css';
+    link.dataset.pagefindUi = 'true';
+    document.head.appendChild(link);
+  };
+
+  const loadScript = (): Promise<void> =>
+    new Promise((resolve, reject) => {
+      if (document.querySelector('script[data-pagefind-ui]')) {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = '/pagefind/pagefind-ui.js';
+      script.dataset.pagefindUi = 'true';
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('pagefind unavailable'));
+      document.head.appendChild(script);
+    });
+
+  const init = async (): Promise<void> => {
+    if (loaded || !mount) return;
+    try {
+      loadCss();
+      await loadScript();
+      const PagefindUI = (window as unknown as { PagefindUI?: new (opts: Record<string, unknown>) => void }).PagefindUI;
+      if (!PagefindUI) throw new Error('PagefindUI missing');
+      new PagefindUI({
+        element: '#pagefind-search',
+        showSubResults: true,
+        showImages: false,
+        resetStyles: false,
+      });
+      loaded = true;
+    } catch {
+      mount.innerHTML =
+        '<p class="search-fallback">Search is indexed when the site is built. Run <code>npm run build &amp;&amp; npm run preview</code> to try it locally — elsewhere, use the tag filters on the Writing page.</p>';
+    }
+  };
+
+  const open = (): void => {
+    if (!dialog) return;
+    dialog.showModal();
+    void init();
+    window.setTimeout(() => {
+      document.querySelector<HTMLInputElement>('.pagefind-ui__search-input')?.focus();
+    }, 120);
+  };
+
+  document.querySelectorAll('[data-search-open]').forEach((trigger) => {
+    trigger.addEventListener('click', open);
+  });
+
+  document.querySelectorAll('[data-search-close]').forEach((button) => {
+    button.addEventListener('click', () => dialog?.close());
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+</script>

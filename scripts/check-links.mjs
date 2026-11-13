@@ -1,0 +1,99 @@
+/**
+ * 对构建后的站点做静态链接完整性检查。
+ * 校验内部 href/src 目标是否存在，以及锚点片段能否解析。
+ *
+ * 用法：npm run build && npm run test:links
+ */
+import { readdir, readFile, stat } from 'node:fs/promises';
+import path from 'node:path';
+
+const dist = path.join(process.cwd(), 'dist');
+
+async function walk(dir) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) files.push(...(await walk(full)));
+    else files.push(full);
+  }
+  return files;
+}
+
+const decodeEntities = (value) =>
+  value
+    .replaceAll('&amp;', '&')
+    .replaceAll('&#38;', '&')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#39;', "'");
+
+async function exists(file) {
+  try {
+    await stat(file);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function resolveTarget(pathname) {
+  const clean = decodeURIComponent(pathname).replace(/\/+$/, '') || '/';
+  const candidates = [];
+  if (clean === '/') candidates.push(path.join(dist, 'index.html'));
+  else if (path.extname(clean)) candidates.push(path.join(dist, clean));
+  else {
+    candidates.push(path.join(dist, `${clean}.html`));
+    candidates.push(path.join(dist, clean, 'index.html'));
+  }
+  for (const candidate of candidates) {
+    if (await exists(candidate)) return candidate;
+  }
+  return null;
+}
+
+const htmlFiles = (await walk(dist)).filter((file) => file.endsWith('.html'));
+const missing = [];
+const brokenAnchors = [];
+let checked = 0;
+
+for (const file of htmlFiles) {
+  const html = await readFile(file, 'utf8');
+  const page = `/${path.relative(dist, file).replace(/\\/g, '/')}`;
+  const refs = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map((match) => decodeEntities(match[1]));
+
+  for (const ref of refs) {
+    if (!ref || ref.startsWith('#') || /^(https?:|mailto:|tel:|data:|javascript:)/i.test(ref)) continue;
+    checked += 1;
+
+    const [rawPath, hash] = ref.split('#');
+    const [pathname] = rawPath.split('?');
+    if (!pathname) continue;
+
+    const target = pathname.startsWith('/')
+      ? await resolveTarget(pathname)
+      : await resolveTarget(path.posix.join(path.posix.dirname(page), pathname));
+
+    if (!target) {
+      missing.push({ page, ref });
+      continue;
+    }
+
+    if (hash && target.endsWith('.html')) {
+      const targetHtml = await readFile(target, 'utf8');
+      const escaped = hash.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const hasAnchor = new RegExp(`id=["']${escaped}["']`).test(targetHtml);
+      if (!hasAnchor) brokenAnchors.push({ page, ref, target: path.relative(dist, target) });
+    }
+  }
+}
+
+console.log(`[links] checked ${checked} internal references across ${htmlFiles.length} pages`);
+
+if (missing.length || brokenAnchors.length) {
+  for (const item of missing) console.error(`  MISSING  ${item.page} -> ${item.ref}`);
+  for (const item of brokenAnchors) console.error(`  ANCHOR   ${item.page} -> ${item.ref}`);
+  console.error(`[links] ${missing.length} missing targets, ${brokenAnchors.length} broken anchors`);
+  process.exit(1);
+}
+
+console.log('[links] all internal links and anchors resolve');

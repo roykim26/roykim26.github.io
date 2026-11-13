@@ -1,0 +1,16 @@
+{
+  "guides": [
+    {
+      "tag": "architecture",
+      "label": "Architecture",
+      "path": "/architecture",
+      "posts": ["boring-architecture", "cost-of-convenience", "rewriting-the-monolith"]
+    },
+    {
+      "tag": "performance",
+      "label": "Performance",
+      "path": "/performance",
+      "posts": ["slow-apis", "cls-in-practice", "build-pipeline-as-product"]
+    }
+  ]
+}

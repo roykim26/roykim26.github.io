@@ -1,0 +1,75 @@
+---
+import { site } from '../lib/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string): boolean => {
+  if (href === '/blog') return path === '/blog' || path.startsWith('/blog/');
+  if (href === '/tags') return path === '/tags' || path.startsWith('/tags/');
+  return path === href;
+};
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href="/" aria-label={`${site.name} — home`}>Jin Lo<span class="dot">.</span></a>
+
+    <div class="header-actions">
+      <nav class="primary-nav" aria-label="Primary">
+        {site.nav.map((item) => (
+          <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+        ))}
+      </nav>
+
+      <button class="icon-btn" type="button" data-search-open aria-label="Search essays">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5"></circle>
+          <path d="m16 16 4.5 4.5"></path>
+        </svg>
+      </button>
+
+      <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"></path>
+        </svg>
+      </button>
+
+      <details class="mobile-menu">
+        <summary class="icon-btn" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M3 7h18M3 12h18M3 17h18"></path>
+          </svg>
+        </summary>
+        <nav class="menu-panel" aria-label="Mobile">
+          {site.nav.map((item) => (
+            <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+          ))}
+          <a href="/rss.xml">RSS</a>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const root = document.documentElement;
+  const syncLabel = (): void => {
+    if (!toggle) return;
+    const dark = root.dataset.theme === 'dark';
+    toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  };
+  syncLabel();
+  toggle?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('jl-theme', next);
+    } catch {
+      /* 存储不可用；本页面仍会应用主题 */
+    }
+    syncLabel();
+  });
+</script>

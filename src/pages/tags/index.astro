@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { collectTags, getPosts } from '../../lib/posts';
+import { topicPath } from '../../lib/site';
+
+const posts = await getPosts();
+const tags = collectTags(posts);
+---
+<BaseLayout
+  title="Topics — Browse Every Essay by Tag"
+  description="Browse the archive by topic: architecture, performance, engineering, DevOps, career, and writing. Each tag page collects every related essay in one place."
+  path="/tags"
+>
+  <div class="container">
+    <header class="page-head">
+      <div class="eyebrow mono">Index</div>
+      <h1>Tags</h1>
+      <p class="lede">Six threads, followed across the archive. Every essay belongs to at least one.</p>
+      <div class="head-meta mono"><span>{tags.length} topics</span><span aria-hidden="true">·</span><span>{posts.length} essays</span></div>
+    </header>
+
+    <div class="tag-index" style="margin-top:32px">
+      {tags.map((tag) => (
+        <a class="tag-row" href={topicPath(tag.name)}>
+          <span class="tag-name">{tag.name}</span>
+          <span class="tag-count mono">{String(tag.count).padStart(2, '0')} essays →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

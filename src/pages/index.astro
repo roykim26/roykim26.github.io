@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostRow from '../components/PostRow.astro';
+import Subscribe from '../components/Subscribe.astro';
+import { getPosts, collectTags, readingTime } from '../lib/posts';
+import { formatDate, topicPath } from '../lib/site';
+
+const posts = await getPosts();
+const allTopics = collectTags(posts);
+const featured = posts.find((post) => post.data.featured) ?? posts[0];
+const featuredTag = featured?.data.tags[0];
+const latest = posts.filter((post) => post.id !== featured?.id).slice(0, 3);
+---
+<BaseLayout>
+  <div class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow mono">Engineering notes · est. 2026</div>
+        <h1 id="hero-title">Field notes on software that survives <em>contact</em>.</h1>
+        <p class="hero-lead">
+          I'm <strong>Jin</strong> — a software engineer building backend systems.
+          I write about the decisions that only reveal their cost years later, and the
+          quiet ones that hold everything together.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href={featured ? `/blog/${featured.id}` : '/blog'}>
+            Read the latest <span aria-hidden="true">→</span>
+          </a>
+          <a class="link-arrow" href="/about">About the author <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
+
+      <aside class="hero-ledger mono" aria-label="Archive at a glance">
+        <div><span>Essays</span><span>{posts.length}</span></div>
+        <div><span>Topics</span><span>{allTopics.length}</span></div>
+        <div><span>Since</span><span>2026</span></div>
+      </aside>
+    </section>
+
+    {featured && (
+      <section class="featured" aria-labelledby="featured-title">
+        <p class="eyebrow mono">Featured essay</p>
+        <div class="featured-grid">
+          <h2 id="featured-title">
+            <a href={`/blog/${featured.id}`}>{featured.data.title}</a>
+          </h2>
+          <div>
+            <p class="featured-desc">{featured.data.description}</p>
+            <div class="featured-meta mono">
+              <time datetime={featured.data.pubDate.toISOString()}>{formatDate(featured.data.pubDate)}</time>
+              <span aria-hidden="true">·</span>
+              <span>{readingTime(featured)} min read</span>
+              {featuredTag && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <a href={topicPath(featuredTag)} style="text-decoration:none">{featuredTag}</a>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="section" aria-labelledby="latest-title">
+      <div class="section-head">
+        <h2 id="latest-title">Latest writing</h2>
+        <a href="/blog">All essays →</a>
+      </div>
+      <div class="post-list">
+        {latest.map((post, index) => (
+          <PostRow post={post} number={String(index + 1).padStart(2, '0')} />
+        ))}
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="topics-title">
+      <div class="section-head">
+        <h2 id="topics-title">Topics</h2>
+        <a href="/tags">All tags →</a>
+      </div>
+      <div class="topic-grid">
+        {allTopics.slice(0, 6).map((topic) => (
+          <a class="topic-link" href={topicPath(topic.name)}>
+            <span>{topic.name}</span>
+            <span class="count mono">{String(topic.count).padStart(2, '0')}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <div class="container" style="margin-top:24px">
+    <Subscribe />
+  </div>
+</BaseLayout>

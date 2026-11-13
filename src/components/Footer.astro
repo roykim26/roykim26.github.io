@@ -1,0 +1,48 @@
+---
+import { site } from '../lib/site';
+
+const year = new Date().getFullYear();
+const elsewhere = [
+  { label: `Email — ${site.author.email}`, href: `mailto:${site.author.email}` },
+  { label: 'GitHub', href: site.author.github },
+  { label: 'X / Twitter', href: site.author.x },
+  { label: 'LinkedIn', href: site.author.linkedin },
+].filter((link) => link.href);
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="wordmark" href="/">Jin Lo<span class="dot">.</span></a>
+        <p>{site.tagline} Essays on architecture, performance, and the craft of building systems.</p>
+      </div>
+
+      <div class="footer-col">
+        <h2>Site</h2>
+        <ul>
+          <li><a href="/blog">Writing</a></li>
+          <li><a href="/architecture">Architecture guide</a></li>
+          <li><a href="/performance">Performance guide</a></li>
+          <li><a href="/tags">Tags</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/newsletter">Newsletter</a></li>
+          <li><a href="/rss.xml">RSS feed</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h2>Elsewhere</h2>
+        <ul>
+          {elsewhere.map((link) => (
+            <li><a href={link.href} rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-base mono">
+      <span>© {year} {site.author.name}. All essays are my own.</span>
+      <span>Set in Instrument Serif · Built with Astro · No trackers</span>
+    </div>
+  </div>
+</footer>

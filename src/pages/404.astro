@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Not found"
+  description="That page is not here. Browse the writing, tags, or head home."
+  path="/404"
+  robots="noindex, follow"
+  canonical={false}
+>
+  <div class="container">
+    <div class="notfound">
+      <div class="code" aria-hidden="true">4<em>0</em>4</div>
+      <h1>Lost in the margins.</h1>
+      <p>
+        The link you followed does not point to an essay, a tag, or a page that exists. It may
+        have been an old URL, or a typo with good intentions.
+      </p>
+      <div class="notfound-links">
+        <a class="btn btn-primary" href="/blog">Read the writing</a>
+        <a class="btn btn-ghost" href="/tags">Browse tags</a>
+        <a class="btn btn-ghost" href="/">Go home</a>
+        <button class="btn btn-ghost" type="button" data-search-open>Search</button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

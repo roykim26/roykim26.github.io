@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostRow from '../../components/PostRow.astro';
+import { getPosts, type Post } from '../../lib/posts';
+import { guideForTag, tagLabel } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+  return tags.map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+const posts = (await getPosts()).filter((post: Post) => post.data.tags.includes(tag));
+
+// 少于 3 篇文章的标签页属于薄内容；有独立 pillar 页的主题（见 src/data/topic-guides.json）
+// 也降级为归档。两者都保留可访问性，但不让搜索引擎索引。
+// 需与 astro.config.mjs 中的 MIN_POSTS_FOR_INDEX 保持一致。
+const MIN_POSTS_FOR_INDEX = 3;
+const pillarPath = guideForTag(tag)?.path;
+const isIndexable = !pillarPath && posts.length >= MIN_POSTS_FOR_INDEX;
+
+const title = tagLabel(tag);
+
+const descriptions: Record<string, string> = {
+  architecture:
+    'Essays on boundaries, migrations, and long-lived decisions: how systems are split, how they age, and what a rewrite really costs in time and attention.',
+  performance:
+    'Essays on latency, payloads, and Core Web Vitals, measured from the reader’s side: how to find the slow hour, fix the tail, and keep pages fast.',
+  engineering:
+    'Essays on code-level craft: TypeScript narrowing, naming, testing, and the dependencies we keep — plus the small decisions that make systems easier to operate.',
+  devops:
+    'Essays on pipelines, releases, and reliability without heroics: build-time budgets, rollout seams, migrations, and the operational cost of every new dependency.',
+  career:
+    'Essays on growth, focus, and working across time zones: deep-work routines, the hidden cost of convenience, and writing with authority as a non-native engineer.',
+  writing:
+    'Essays on documentation, clarity, and writing for the reader who arrives second — plus how to write English with authority when it is not your first language.',
+};
+
+const fallbackDescription =
+  'Notes from the archive on this topic: field reports on building, shipping, and maintaining software that has to survive contact with reality.';
+---
+<BaseLayout
+  title={`${title} — Tagged Essays`}
+  description={descriptions[tag] ?? fallbackDescription}
+  path={`/tags/${tag}`}
+  robots={isIndexable ? undefined : 'noindex, follow'}
+>
+  <div class="container">
+    <header class="page-head">
+      <a class="mono" href="/tags" style="text-decoration:none">← All tags</a>
+      <h1>{title}</h1>
+      <p class="lede">{descriptions[tag] ?? fallbackDescription}</p>
+      <div class="head-meta mono">
+        <span>{posts.length} {posts.length === 1 ? 'essay' : 'essays'}</span>
+        <span aria-hidden="true">·</span>
+        <span>Tagged “{tag}”</span>
+      </div>
+      {pillarPath && (
+        <p class="pillar-note">
+          This is the tag archive. Read the <a href={pillarPath}>{title} guide</a> for the
+          curated path through these essays.
+        </p>
+      )}
+    </header>
+
+    <div class="post-list" style="margin-top:24px">
+      {posts.map((post) => <PostRow post={post} />)}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .pillar-note {
+    max-width: 60ch;
+    margin-top: 20px;
+    padding: 14px 16px;
+    border: 1px solid var(--rule);
+    background: var(--bg-raised);
+    color: var(--ink-soft);
+    font-size: var(--fs-sm);
+  }
+
+  .pillar-note a {
+    color: var(--ink);
+  }
+</style>

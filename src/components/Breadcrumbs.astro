@@ -1,0 +1,71 @@
+---
+import { absoluteUrl } from '../lib/site';
+
+interface Props {
+  items: { label: string; href?: string }[];
+}
+
+const { items } = Astro.props;
+
+// 最后一项是当前页面，按 schema.org 约定不带 item URL。
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.label,
+    ...(item.href ? { item: absoluteUrl(item.href) } : {}),
+  })),
+};
+---
+<nav class="breadcrumbs mono" aria-label="Breadcrumb">
+  <ol>
+    {items.map((item) => (
+      <li>
+        {item.href ? <a href={item.href}>{item.label}</a> : <span aria-current="page">{item.label}</span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<style>
+  .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .breadcrumbs li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink-faint);
+  }
+
+  .breadcrumbs li + li::before {
+    content: "/";
+    color: var(--ink-faint);
+  }
+
+  .breadcrumbs a {
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+
+  .breadcrumbs a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .breadcrumbs [aria-current="page"] {
+    color: var(--ink);
+  }
+</style>

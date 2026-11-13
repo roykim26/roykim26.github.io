@@ -1,0 +1,66 @@
+---
+import { site } from '../lib/site';
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  compact?: boolean;
+}
+
+const {
+  eyebrow = 'The irregular letter',
+  heading = 'New essays, every other Tuesday.',
+  body = 'One thoughtful piece on building software, written for humans. No links roundups, no growth hacks, no tracking.',
+  compact = false,
+} = Astro.props;
+
+const endpoint = site.newsletter.endpoint;
+---
+<div class:list={['subscribe', { 'is-compact': compact }]}>
+  <div>
+    <p class="mono" style="margin-bottom:10px">{eyebrow}</p>
+    <h2>{heading}</h2>
+    <p>{body}</p>
+  </div>
+
+  <div>
+    {endpoint ? (
+      <form class="subscribe-form" action={endpoint} method="post" target="_blank">
+        <div class="field">
+          <label class="mono" for="subscribe-email">Email address</label>
+          <input
+            id="subscribe-email"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+        </div>
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    ) : (
+      <div>
+        <a
+          class="btn"
+          style="background:var(--band-ink);color:var(--band-bg);border-color:var(--band-ink)"
+          href={`mailto:${site.author.email}?subject=${encodeURIComponent('Subscribe to the newsletter')}`}
+        >
+          Subscribe by email
+        </a>
+        <p class="mono" style="margin-top:12px">
+          Email capture is configured at launch. Until then, write to {site.author.email}.
+        </p>
+      </div>
+    )}
+    <p class="mono" style="margin-top:14px">{site.newsletter.cadence} · {site.newsletter.privacy}</p>
+  </div>
+
+  <div class="subscribe-alt">
+    <span>Prefer a feed? The full text is in</span>
+    <a href="/rss.xml">RSS →</a>
+    <span>·</span>
+    <a href="/newsletter">What the letter is →</a>
+  </div>
+</div>

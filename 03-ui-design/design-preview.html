@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jin Lo — 设计系统 v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F6F2E9;
+    --bg-raised: #FBF8F1;
+    --ink: #16130E;
+    --ink-soft: #4A443A;
+    --ink-faint: #7A7264;
+    --rule: #D9D1C2;
+    --accent: #B23A1B;
+    --accent-wash: #F0E0D6;
+    --code-bg: #1B1916;
+    --focus: #1F5FA8;
+    --font-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --container: 1120px;
+    --radius: 2px;
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  [data-theme="dark"] {
+    --bg: #121110;
+    --bg-raised: #191715;
+    --ink: #EDE7DA;
+    --ink-soft: #B9B1A4;
+    --ink-faint: #9A9285;
+    --rule: #2E2A25;
+    --accent: #F07A52;
+    --accent-wash: #2A1A13;
+    --code-bg: #0B0A09;
+    --focus: #8CBEF5;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--bg); color: var(--ink); scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(rgba(120,100,70,.045) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+  a { color: var(--accent); text-underline-offset: .2em; text-decoration-thickness: 1px; }
+  a:hover { color: var(--ink); text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .wrap { width: min(var(--container), 100% - 48px); margin-inline: auto; }
+  .mono { font-family: var(--font-mono); font-size: .6875rem; letter-spacing: .1em; text-transform: uppercase; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; color: var(--ink-faint); }
+  .eyebrow::after { content: ""; height: 1px; flex: 1; background: var(--rule); }
+
+  /* ---- doc header ---- */
+  .doc-head { border-bottom: 1px solid var(--rule); padding: 28px 0 20px; }
+  .doc-head .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .wordmark { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: -.01em; color: var(--ink); text-decoration: none; }
+  .wordmark b { color: var(--accent); font-weight: 400; }
+  .doc-head nav { display: flex; gap: 20px; }
+  .doc-head nav a { font-family: var(--font-mono); font-size: .6875rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; }
+  .doc-head nav a:hover { color: var(--ink); }
+  .theme-btn { border: 1px solid var(--rule); background: transparent; color: var(--ink); width: 40px; height: 40px; border-radius: var(--radius); cursor: pointer; font-size: 15px; }
+  .theme-btn:hover { border-color: var(--ink); }
+
+  /* ---- doc hero ---- */
+  .doc-hero { padding: 72px 0 48px; border-bottom: 1px solid var(--rule); }
+  .doc-hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.03; letter-spacing: -.02em; margin: 18px 0 14px; max-width: 16ch; }
+  .doc-hero h1 em { font-style: italic; color: var(--accent); }
+  .doc-hero p { max-width: 58ch; color: var(--ink-soft); font-size: 1.1875rem; margin: 0; }
+
+  /* ---- sections ---- */
+  section.block { padding: 56px 0; border-bottom: 1px solid var(--rule); }
+  .block-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 32px; }
+  .block-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 2rem; margin: 0; }
+  .block-head .num { color: var(--accent); }
+  .block-head .note { margin-left: auto; color: var(--ink-faint); }
+
+  /* ---- swatches ---- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .swatch { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--bg-raised); }
+  .swatch .chip { height: 76px; border-bottom: 1px solid var(--rule); }
+  .swatch .meta { padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .swatch .meta b { font-family: var(--font-mono); font-size: .6875rem; letter-spacing: .04em; font-weight: 500; }
+  .swatch .meta span { font-family: var(--font-mono); font-size: .625rem; color: var(--ink-faint); letter-spacing: .04em; }
+
+  /* ---- type specimen ---- */
+  .specimen { display: grid; gap: 26px; }
+  .specimen .row { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding-top: 18px; border-top: 1px solid var(--rule); }
+  .specimen .row:first-child { border-top: 0; padding-top: 0; }
+  .specimen .label { color: var(--ink-faint); padding-top: 6px; }
+  .specimen .demo h3 { margin: 0; }
+  .display-xl { font-family: var(--font-display); font-size: clamp(2.5rem, 5.5vw, 4.25rem); line-height: 1.02; letter-spacing: -.02em; font-weight: 400; }
+  .display-l { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.06; font-weight: 400; }
+  .h2demo { font-family: var(--font-display); font-size: 1.875rem; font-weight: 400; line-height: 1.2; }
+  .serif-body { font-size: 1.125rem; line-height: 1.75; max-width: 60ch; color: var(--ink-soft); }
+  .mini-body { font-size: 1rem; line-height: 1.7; color: var(--ink-soft); margin: 6px 0 0; }
+
+  /* ---- components ---- */
+  .demo-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .panel { border: 1px solid var(--rule); border-radius: var(--radius); background: var(--bg-raised); padding: 22px; }
+  .panel > .label { color: var(--ink-faint); margin-bottom: 16px; display: block; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: var(--radius); font-family: var(--font-mono); font-size: .6875rem; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: background-color .12s var(--ease), color .12s var(--ease), border-color .12s var(--ease); }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent); color: #fff; }
+  .btn-ghost { border-color: var(--ink); color: var(--ink); background: transparent; }
+  .btn-ghost:hover { background: var(--ink); color: var(--bg); }
+  .tag { display: inline-flex; align-items: center; font-family: var(--font-mono); font-size: .625rem; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--rule); border-radius: var(--radius); padding: 4px 9px; color: var(--ink-soft); text-decoration: none; }
+  .tag:hover { background: var(--accent-wash); border-color: var(--accent); color: var(--accent); }
+
+  .postlist { display: grid; }
+  .post-row { display: grid; grid-template-columns: 76px 1fr auto; gap: 18px; padding: 18px 0; border-top: 1px solid var(--rule); text-decoration: none; color: inherit; align-items: baseline; transition: color .12s var(--ease); }
+  .post-row:hover { color: var(--accent); }
+  .post-row .date { color: var(--ink-faint); }
+  .post-row h4 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; margin: 0 0 4px; line-height: 1.2; }
+  .post-row p { margin: 0; font-size: .9375rem; color: var(--ink-soft); }
+  .post-row .rt { color: var(--ink-faint); white-space: nowrap; }
+
+  .field { display: grid; gap: 10px; }
+  .field label { font-family: var(--font-mono); font-size: .625rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+  .subscribe { display: flex; gap: 12px; align-items: flex-end; }
+  .subscribe input { flex: 1; min-height: 44px; border: 0; border-bottom: 1px solid var(--ink); background: transparent; color: var(--ink); font-family: var(--font-body); font-size: 1.0625rem; padding: 8px 2px; }
+  .subscribe input::placeholder { color: var(--ink-faint); }
+  .subscribe input:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+  pre { margin: 0; background: var(--code-bg); color: #E8E3D8; padding: 20px; border-radius: var(--radius); overflow-x: auto; font-family: var(--font-mono); font-size: .8125rem; line-height: 1.7; }
+  pre .c { color: #8B8578; }
+  pre .k { color: #F0A868; }
+  pre .s { color: #A8C68F; }
+  code.inline { font-family: var(--font-mono); font-size: .85em; background: var(--bg-raised); border: 1px solid var(--rule); border-radius: var(--radius); padding: 1px 5px; }
+  blockquote { margin: 0; border-left: 3px solid var(--accent); padding-left: 20px; font-family: var(--font-body); font-style: italic; font-size: 1.1875rem; color: var(--ink-soft); }
+
+  .toc { border-left: 1px solid var(--rule); padding-left: 18px; display: grid; gap: 10px; }
+  .toc .label { color: var(--ink-faint); margin-bottom: 4px; }
+  .toc a { font-size: .875rem; color: var(--ink-faint); text-decoration: none; border-left: 2px solid transparent; padding-left: 8px; margin-left: -20px; }
+  .toc a:hover { color: var(--ink); }
+  .toc a[aria-current="true"] { color: var(--ink); border-left-color: var(--accent); }
+
+  /* ---- home mock ---- */
+  .mock { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--bg); }
+  .mock-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; border-bottom: 1px solid var(--rule); background: var(--bg); }
+  .mock-bar nav { display: flex; gap: 14px; }
+  .mock-bar nav span { font-family: var(--font-mono); font-size: .5625rem; letter-spacing: .1em; color: var(--ink-soft); }
+  .mock-hero { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; padding: 40px 28px; border-bottom: 1px solid var(--rule); }
+  .mock-hero h3 { font-family: var(--font-display); font-size: clamp(1.75rem, 3.4vw, 2.75rem); line-height: 1.04; font-weight: 400; margin: 10px 0; letter-spacing: -.02em; }
+  .mock-hero h3 em { color: var(--accent); }
+  .mock-hero p { font-size: .875rem; color: var(--ink-soft); margin: 0 0 16px; max-width: 38ch; }
+  .plate { border: 1px solid var(--rule); padding: 18px; display: grid; align-content: space-between; background: repeating-linear-gradient(135deg, transparent 0 9px, rgba(120,100,70,.05) 9px 10px); }
+  .plate p { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; line-height: 1.3; color: var(--ink); margin: 0; }
+  .plate span { color: var(--ink-faint); }
+  .mock-section { padding: 22px 28px; border-bottom: 1px solid var(--rule); }
+  .mock-section:last-child { border-bottom: 0; }
+  .mock-feature h4 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; margin: 6px 0; }
+  .mock-feature p { font-size: .8125rem; color: var(--ink-soft); margin: 0 0 10px; }
+
+  .post-mock { display: grid; grid-template-columns: 170px 1fr; gap: 34px; padding: 28px; }
+  .post-mock h3 { font-family: var(--font-display); font-size: 2rem; font-weight: 400; line-height: 1.08; margin: 8px 0 8px; }
+  .post-mock .stand { font-style: italic; color: var(--ink-soft); font-size: .9375rem; max-width: 40ch; }
+  .post-mock .body p { font-size: .875rem; color: var(--ink-soft); max-width: 46ch; }
+  .post-mock .body h5 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; margin: 16px 0 6px; }
+
+  /* ---- spacing ---- */
+  .scale { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+  .scale div { background: var(--accent-wash); border: 1px solid var(--rule); display: grid; place-items: center; font-family: var(--font-mono); font-size: .5625rem; color: var(--ink-soft); }
+  .tokens-table { width: 100%; border-collapse: collapse; font-size: .875rem; margin-top: 18px; }
+  .tokens-table th, .tokens-table td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); }
+  .tokens-table th { font-family: var(--font-mono); font-size: .625rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; }
+  .tokens-table td:first-child { font-family: var(--font-mono); font-size: .75rem; }
+
+  footer.doc-foot { padding: 40px 0 64px; color: var(--ink-faint); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  @media (max-width: 760px) {
+    .mock-hero, .post-mock { grid-template-columns: 1fr; }
+    .specimen .row { grid-template-columns: 1fr; gap: 6px; }
+    .post-row { grid-template-columns: 64px 1fr; }
+    .post-row .rt { display: none; }
+    .doc-head nav { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+<header class="doc-head">
+  <div class="wrap bar">
+    <a class="wordmark" href="#top">Jin Lo<b>.</b></a>
+    <nav aria-label="设计样张章节">
+      <a href="#palette">调色板</a>
+      <a href="#type">字体</a>
+      <a href="#components">组件</a>
+      <a href="#layouts">布局</a>
+      <a href="#space">间距</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="切换深色模式">☾</button>
+  </div>
+</header>
+
+<main id="top" class="wrap">
+  <div class="doc-hero">
+    <div class="eyebrow mono">设计系统 · v1.0 · 2026</div>
+    <h1>暖纸上的<em>墨迹</em>。</h1>
+    <p>一套为安静的工程博客而设的编辑体系统：衬线展示字、等宽元数据、
+       唯一的朱红点缀，以及用发丝线代替卡片。这里的一切都对应
+       <code class="inline">src/styles/global.css</code> 中的 token。</p>
+  </div>
+
+  <section class="block" id="palette">
+    <div class="block-head">
+      <span class="mono num">01</span>
+      <h2>调色板</h2>
+      <span class="mono note">七组 token，不临时造色</span>
+    </div>
+    <div class="swatches">
+      <div class="swatch"><div class="chip" style="background:#F6F2E9"></div><div class="meta"><b>--bg</b><span>#F6F2E9 · paper</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#16130E"></div><div class="meta"><b>--ink</b><span>#16130E · ink</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#4A443A"></div><div class="meta"><b>--ink-soft</b><span>#4A443A · body</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#7A7264"></div><div class="meta"><b>--ink-faint</b><span>#7A7264 · meta</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#D9D1C2"></div><div class="meta"><b>--rule</b><span>#D9D1C2 · hairline</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#B23A1B"></div><div class="meta"><b>--accent</b><span>#B23A1B · vermilion</span></div></div>
+      <div class="swatch"><div class="chip" style="background:#1B1916"></div><div class="meta"><b>--code-bg</b><span>#1B1916 · slab</span></div></div>
+    </div>
+  </section>
+
+  <section class="block" id="type">
+    <div class="block-head">
+      <span class="mono num">02</span>
+      <h2>字体排版</h2>
+      <span class="mono note">Instrument Serif · Newsreader · JetBrains Mono</span>
+    </div>
+    <div class="specimen">
+      <div class="row">
+        <div class="label mono">Display XL</div>
+        <div class="demo"><div class="display-xl">Software that survives contact with <em>reality</em>.</div></div>
+      </div>
+      <div class="row">
+        <div class="label mono">Display L</div>
+        <div class="demo"><div class="display-l">The Case for Boring Architecture</div></div>
+      </div>
+      <div class="row">
+        <div class="label mono">Body · 18/1.75</div>
+        <div class="demo"><p class="serif-body">Every system is a bet on which problems you will still have in two years. Most teams make that bet implicitly, then discover the terms at three in the morning, when the pager goes off and nobody remembers why the queue was chosen.</p></div>
+      </div>
+      <div class="row">
+        <div class="label mono">UI / Mono</div>
+        <div class="demo"><span class="mono">Writing · Tags · About · 6 min read</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="components">
+    <div class="block-head">
+      <span class="mono num">03</span>
+      <h2>组件</h2>
+      <span class="mono note">最小点击目标：44px</span>
+    </div>
+    <div class="demo-grid">
+      <div class="panel">
+        <span class="label mono">操作</span>
+        <p style="display:flex;gap:12px;flex-wrap:wrap;margin:0">
+          <a class="btn btn-primary" href="#components">Read the latest <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" href="#components">About</a>
+        </p>
+        <p style="display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 0">
+          <a class="tag" href="#components">Architecture</a>
+          <a class="tag" href="#components">Performance</a>
+          <a class="tag" href="#components">Career</a>
+        </p>
+      </div>
+      <div class="panel">
+        <span class="label mono">订阅表单</span>
+        <form class="subscribe" onsubmit="event.preventDefault(); this.querySelector('[role=status]').textContent='谢谢订阅 —— 这是设计样张演示。';">
+          <div class="field" style="flex:1">
+            <label for="email">Email address</label>
+            <input id="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <button class="btn btn-primary" type="submit">Subscribe</button>
+          <p role="status" class="mono" style="flex-basis:100%;margin:0;color:var(--accent)"></p>
+        </form>
+      </div>
+      <div class="panel">
+        <span class="label mono">目录</span>
+        <nav class="toc" aria-label="目录演示">
+          <span class="label mono">Contents</span>
+          <a href="#components" aria-current="true">The upgrade tax</a>
+          <a href="#components">Three questions</a>
+          <a href="#components">What boring buys</a>
+          <a href="#components">A short checklist</a>
+        </nav>
+      </div>
+      <div class="panel" style="grid-column:span 2">
+        <span class="label mono">代码与引用</span>
+        <pre><code><span class="c">// boring on purpose, not by accident</span>
+<span class="k">const</span> queue = <span class="k">new</span> FIFOQueue({ retries: <span class="s">3</span>, backoff: <span class="s">'exponential'</span> });
+<span class="k">await</span> queue.push(job);</code></pre>
+        <blockquote style="margin-top:22px">“The interesting choice is usually the one you pay for at 3 a.m.”</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="layouts">
+    <div class="block-head">
+      <span class="mono num">04</span>
+      <h2>布局构成</h2>
+      <span class="mono note">首页与文章页，精简呈现</span>
+    </div>
+
+    <div class="mock" aria-label="首页布局构成">
+      <div class="mock-bar">
+        <span class="wordmark" style="font-size:1.1rem">Jin Lo<b>.</b></span>
+        <nav><span>WRITING</span><span>TAGS</span><span>ABOUT</span><span>☾</span></nav>
+      </div>
+      <div class="mock-hero">
+        <div>
+          <div class="eyebrow mono" style="font-size:.5rem">Engineering notes · est. 2026</div>
+          <h3>Field notes on software that survives <em>contact</em>.</h3>
+          <p>I’m Jin — I build and maintain systems for a living, and write down what actually held up.</p>
+          <span class="btn btn-primary" style="min-height:36px;font-size:.5625rem">Read the latest →</span>
+        </div>
+        <div class="plate">
+          <p>“The best systems are the ones you forget you own.”</p>
+          <span class="mono" style="font-size:.5rem">From the archive</span>
+        </div>
+      </div>
+      <div class="mock-section mock-feature">
+        <span class="mono" style="color:var(--accent);font-size:.5rem">Featured essay</span>
+        <h4>The Case for Boring Architecture</h4>
+        <p>Everyone wants the interesting choice. The interesting choice is usually the one you pay for at 3 a.m.</p>
+        <span class="mono" style="font-size:.5rem;color:var(--ink-faint)">02 JUN 2026 · 6 MIN READ · ARCHITECTURE</span>
+      </div>
+      <div class="mock-section">
+        <div class="postlist">
+          <a class="post-row" href="#layouts" style="padding:10px 0">
+            <span class="date mono" style="font-size:.5rem">27 OCT</span>
+            <span><h4 style="font-size:1.05rem">Writing English as a Second-Language Engineer</h4></span>
+            <span class="rt mono" style="font-size:.5rem">11 MIN</span>
+          </a>
+          <a class="post-row" href="#layouts" style="padding:10px 0">
+            <span class="date mono" style="font-size:.5rem">06 OCT</span>
+            <span><h4 style="font-size:1.05rem">Your Build Pipeline Is a Product</h4></span>
+            <span class="rt mono" style="font-size:.5rem">8 MIN</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mock" style="margin-top:24px" aria-label="文章页布局构成">
+      <div class="mock-bar">
+        <span class="wordmark" style="font-size:1.1rem">Jin Lo<b>.</b></span>
+        <nav><span>WRITING</span><span>TAGS</span><span>ABOUT</span><span>⌕</span></nav>
+      </div>
+      <div class="post-mock">
+        <nav class="toc" aria-label="文章目录演示">
+          <span class="label mono">Contents</span>
+          <a href="#layouts" aria-current="true">The upgrade tax</a>
+          <a href="#layouts">Three questions</a>
+          <a href="#layouts">What boring buys</a>
+        </nav>
+        <div class="body">
+          <span class="mono" style="color:var(--ink-faint);font-size:.5rem">ARCHITECTURE · 02 JUN 2026 · 6 MIN READ</span>
+          <h3>The Case for Boring Architecture</h3>
+          <p class="stand">Everyone wants the interesting choice. The interesting choice is usually the one you pay for at 3 a.m.</p>
+          <h5>The upgrade tax</h5>
+          <p>Every system is a bet on which problems you will still have in two years. Most teams make that bet implicitly…</p>
+          <p><a href="#layouts">A related essay →</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="space">
+    <div class="block-head">
+      <span class="mono num">05</span>
+      <h2>间距与 token</h2>
+      <span class="mono note">4px 基准 · 2px 圆角</span>
+    </div>
+    <div class="scale">
+      <div style="width:4px;height:28px">4</div>
+      <div style="width:8px;height:32px">8</div>
+      <div style="width:12px;height:36px">12</div>
+      <div style="width:16px;height:40px">16</div>
+      <div style="width:24px;height:46px">24</div>
+      <div style="width:32px;height:52px">32</div>
+      <div style="width:48px;height:58px">48</div>
+      <div style="width:64px;height:64px">64</div>
+      <div style="width:96px;height:70px">96</div>
+    </div>
+    <table class="tokens-table">
+      <thead><tr><th>Token</th><th>取值</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td>--container</td><td>1120px</td><td>页面宽度，48px 边距</td></tr>
+        <tr><td>--measure</td><td>68ch</td><td>正文行宽</td></tr>
+        <tr><td>--radius</td><td>2px</td><td>输入框、按钮、标签</td></tr>
+        <tr><td>--ease</td><td>cubic-bezier(.2,.7,.2,1)</td><td>悬停与浮层</td></tr>
+        <tr><td>Focus ring</td><td>2px solid, 2px offset</td><td>所有可交互元素</td></tr>
+        <tr><td>Touch target</td><td>44×44px min</td><td>导航、切换、分享</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<footer class="wrap doc-foot">
+  <span class="mono">Jin Lo — 设计系统 v1.0</span>
+  <span class="mono">WCAG 2.2 AA · 浅色与深色 · 不使用图库素材</span>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const stored = localStorage.getItem('jl-theme');
+  if (stored) root.dataset.theme = stored;
+  else if (matchMedia('(prefers-color-scheme: dark)').matches) root.dataset.theme = 'dark';
+  const sync = () => { btn.textContent = root.dataset.theme === 'dark' ? '☀' : '☾'; };
+  sync();
+  btn.addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('jl-theme', root.dataset.theme);
+    sync();
+  });
+</script>
+</body>
+</html>

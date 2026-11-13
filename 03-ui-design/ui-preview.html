@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UI 截图预览 · Jin Lo</title>
+<style>
+  :root {
+    --bg: #f6f2e9;
+    --bg-raised: #fbf8f1;
+    --ink: #16130e;
+    --ink-soft: #4a443a;
+    --ink-faint: #6e6659;
+    --rule: #d9d1c2;
+    --accent: #b23a1b;
+    --dark: #121110;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --serif: "Iowan Old Style", Georgia, "Times New Roman", serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 28px 64px;
+    background-color: var(--bg);
+    background-image: radial-gradient(rgba(120, 100, 70, 0.045) 1px, transparent 1px);
+    background-size: 4px 4px;
+    color: var(--ink);
+    font: 16px/1.65 var(--serif);
+  }
+  .wrap { max-width: 1560px; margin: 0 auto; }
+
+  /* ---------- 页头 ---------- */
+  .kicker {
+    font: 11px/1.4 var(--mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 12px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede {
+    max-width: 74ch;
+    margin: 0 0 18px;
+    color: var(--ink-soft);
+    font-size: 17px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+    font: 11px/1.4 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .meta b { color: var(--ink); font-weight: 400; }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 22px;
+  }
+  .toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 11px/1.4 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle input { width: 14px; height: 14px; accent-color: var(--accent); cursor: pointer; }
+  .hint { font: 11px/1.4 var(--mono); letter-spacing: 0.04em; color: var(--ink-faint); }
+
+  /* ---------- 矩阵 ---------- */
+  .matrix { display: grid; gap: 10px 14px; }
+  .row {
+    display: grid;
+    grid-template-columns: 128px repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+  }
+  .row + .row { padding-top: 10px; border-top: 1px solid var(--rule); }
+  .row.head { border-top: 0; padding-top: 0; }
+  .col-head {
+    font: 10px/1.4 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-bottom: 2px;
+  }
+  .col-head b { display: block; color: var(--ink); font-weight: 400; font-size: 11px; }
+  .col-head span { color: var(--ink-faint); }
+  .page-label {
+    padding-top: 2px;
+    font: 10px/1.5 var(--mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .page-label b {
+    display: block;
+    font: 400 21px/1.15 var(--serif);
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .page-label code { font-size: 10px; color: var(--ink-faint); letter-spacing: 0; text-transform: none; }
+
+  figure { margin: 0; }
+  a.shot {
+    display: block;
+    position: relative;
+    border: 1px solid var(--rule);
+    background: var(--bg-raised);
+    text-decoration: none;
+    overflow: hidden;
+    border-radius: 2px;
+  }
+  a.shot.dark { background: var(--dark); border-color: #3a3530; }
+  a.shot img {
+    display: block;
+    width: 100%;
+    height: 248px;
+    object-fit: cover;
+    object-position: top center;
+  }
+  a.shot::after {
+    content: "查看整页 ↗";
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    padding: 4px 7px;
+    background: rgba(18, 17, 16, 0.82);
+    color: #f6f2e9;
+    font: 10px/1.2 var(--mono);
+    letter-spacing: 0.06em;
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+  a.shot:hover::after,
+  a.shot:focus-visible::after { opacity: 1; }
+  a.shot:focus-visible { outline: 2px solid #1f5fa8; outline-offset: 2px; }
+  figcaption {
+    margin-top: 6px;
+    font: 10px/1.5 var(--mono);
+    letter-spacing: 0.03em;
+    color: var(--ink-faint);
+    overflow-wrap: anywhere;
+  }
+
+  /* 完整长图模式 */
+  body:has(#full:checked) .matrix a.shot img { height: auto; object-fit: initial; }
+
+  footer {
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    font: 11px/1.7 var(--mono);
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+  }
+  footer p { margin: 0 0 6px; }
+  footer code { color: var(--ink-soft); }
+
+  @media (max-width: 1180px) {
+    .row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .row.head { display: none; }
+    .page-label { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 10px; }
+    .page-label b { margin: 0; }
+  }
+  @media (max-width: 720px) {
+    body { padding: 24px 16px 40px; }
+    .row { grid-template-columns: 1fr; gap: 10px; }
+    .page-label b { font-size: 19px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">03-ui-design · UI preview · 2026-11-13</p>
+    <h1>修复后的<em>界面</em>截图</h1>
+    <p class="lede">
+      20 张整页截图，覆盖 5 个页面 × 亮色/暗色 × 桌面/移动。取自生产构建
+      （<code>npm run build</code> + <code>astro preview</code>），已包含对比度修正：
+      控件边框改用 <code>--control-border</code>、按钮悬停文字改纸色、色带内焦点环改色带前景色、
+      代码高亮换高对比主题。本页不依赖构建产物，直接双击即可打开。
+    </p>
+    <ul class="meta">
+      <li><b>5</b> 页面</li>
+      <li><b>2</b> 主题</li>
+      <li><b>2</b> 断点</li>
+      <li><b>20</b> 张截图</li>
+      <li>桌面 <b>1440</b> · 移动 <b>390</b></li>
+    </ul>
+  </header>
+
+  <div class="bar">
+    <label class="toggle" for="full">
+      <input type="checkbox" id="full">
+      显示完整长图（不裁切，页面会变长）
+    </label>
+    <span class="hint">缩略图按页顶裁切；点击任意一张可查看原图</span>
+  </div>
+
+  <section class="matrix">
+
+    <div class="row head">
+      <div></div>
+      <div class="col-head"><b>桌面 · 亮色</b><span>1440 px</span></div>
+      <div class="col-head"><b>桌面 · 暗色</b><span>1440 px</span></div>
+      <div class="col-head"><b>移动 · 亮色</b><span>390 px</span></div>
+      <div class="col-head"><b>移动 · 暗色</b><span>390 px</span></div>
+    </div>
+
+    <!-- 首页 -->
+    <div class="row">
+      <div class="page-label"><b>首页</b><code>/</code></div>
+      <figure>
+        <a class="shot" href="screenshots/home-desktop-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/home-desktop-light.png" alt="首页，亮色主题，桌面 1440px">
+        </a>
+        <figcaption>home-desktop-light · 1440×2687</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/home-desktop-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/home-desktop-dark.png" alt="首页，暗色主题，桌面 1440px">
+        </a>
+        <figcaption>home-desktop-dark · 1440×2687</figcaption>
+      </figure>
+      <figure>
+        <a class="shot" href="screenshots/home-mobile-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/home-mobile-light.png" alt="首页，亮色主题，移动 390px">
+        </a>
+        <figcaption>home-mobile-light · 390×3581</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/home-mobile-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/home-mobile-dark.png" alt="首页，暗色主题，移动 390px">
+        </a>
+        <figcaption>home-mobile-dark · 390×3581</figcaption>
+      </figure>
+    </div>
+
+    <!-- 文章列表 -->
+    <div class="row">
+      <div class="page-label"><b>文章列表</b><code>/blog</code></div>
+      <figure>
+        <a class="shot" href="screenshots/blog-desktop-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/blog-desktop-light.png" alt="文章列表，亮色主题，桌面 1440px">
+        </a>
+        <figcaption>blog-desktop-light · 1440×2394</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/blog-desktop-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/blog-desktop-dark.png" alt="文章列表，暗色主题，桌面 1440px">
+        </a>
+        <figcaption>blog-desktop-dark · 1440×2394</figcaption>
+      </figure>
+      <figure>
+        <a class="shot" href="screenshots/blog-mobile-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/blog-mobile-light.png" alt="文章列表，亮色主题，移动 390px">
+        </a>
+        <figcaption>blog-mobile-light · 390×3108</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/blog-mobile-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/blog-mobile-dark.png" alt="文章列表，暗色主题，移动 390px">
+        </a>
+        <figcaption>blog-mobile-dark · 390×3108</figcaption>
+      </figure>
+    </div>
+
+    <!-- 文章详情 -->
+    <div class="row">
+      <div class="page-label"><b>文章详情</b><code>/blog/typescript-narrowing</code></div>
+      <figure>
+        <a class="shot" href="screenshots/post-desktop-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/post-desktop-light.png" alt="文章详情，亮色主题，桌面 1440px">
+        </a>
+        <figcaption>post-desktop-light · 1440×7415</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/post-desktop-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/post-desktop-dark.png" alt="文章详情，暗色主题，桌面 1440px">
+        </a>
+        <figcaption>post-desktop-dark · 1440×7415</figcaption>
+      </figure>
+      <figure>
+        <a class="shot" href="screenshots/post-mobile-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/post-mobile-light.png" alt="文章详情，亮色主题，移动 390px">
+        </a>
+        <figcaption>post-mobile-light · 390×10461</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/post-mobile-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/post-mobile-dark.png" alt="文章详情，暗色主题，移动 390px">
+        </a>
+        <figcaption>post-mobile-dark · 390×10461</figcaption>
+      </figure>
+    </div>
+
+    <!-- About -->
+    <div class="row">
+      <div class="page-label"><b>About</b><code>/about</code></div>
+      <figure>
+        <a class="shot" href="screenshots/about-desktop-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/about-desktop-light.png" alt="About 页面，亮色主题，桌面 1440px">
+        </a>
+        <figcaption>about-desktop-light · 1440×2062</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/about-desktop-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/about-desktop-dark.png" alt="About 页面，暗色主题，桌面 1440px">
+        </a>
+        <figcaption>about-desktop-dark · 1440×2062</figcaption>
+      </figure>
+      <figure>
+        <a class="shot" href="screenshots/about-mobile-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/about-mobile-light.png" alt="About 页面，亮色主题，移动 390px">
+        </a>
+        <figcaption>about-mobile-light · 390×3367</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/about-mobile-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/about-mobile-dark.png" alt="About 页面，暗色主题，移动 390px">
+        </a>
+        <figcaption>about-mobile-dark · 390×3367</figcaption>
+      </figure>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="row">
+      <div class="page-label"><b>Newsletter</b><code>/newsletter</code></div>
+      <figure>
+        <a class="shot" href="screenshots/newsletter-desktop-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/newsletter-desktop-light.png" alt="Newsletter 页面，亮色主题，桌面 1440px">
+        </a>
+        <figcaption>newsletter-desktop-light · 1440×1553</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/newsletter-desktop-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/newsletter-desktop-dark.png" alt="Newsletter 页面，暗色主题，桌面 1440px">
+        </a>
+        <figcaption>newsletter-desktop-dark · 1440×1553</figcaption>
+      </figure>
+      <figure>
+        <a class="shot" href="screenshots/newsletter-mobile-light.png" target="_blank" rel="noopener">
+          <img src="screenshots/newsletter-mobile-light.png" alt="Newsletter 页面，亮色主题，移动 390px">
+        </a>
+        <figcaption>newsletter-mobile-light · 390×2169</figcaption>
+      </figure>
+      <figure>
+        <a class="shot dark" href="screenshots/newsletter-mobile-dark.png" target="_blank" rel="noopener">
+          <img src="screenshots/newsletter-mobile-dark.png" alt="Newsletter 页面，暗色主题，移动 390px">
+        </a>
+        <figcaption>newsletter-mobile-dark · 390×2169</figcaption>
+      </figure>
+    </div>
+
+  </section>
+
+  <footer>
+    <p>取图方式：Chrome headless + DevTools Protocol，1440×1000 / 390×844 视口、整页捕获、设备像素比 1；
+      截图前注入 <code>*{transition:none}</code> 并等待字体加载，暗色通过 <code>data-theme="dark"</code> 切换。</p>
+    <p>截图目录：<code>03-ui-design/screenshots/</code> · 命名规则：<code>页面-断点-主题.png</code>。</p>
+    <p>对比度核算见 <code>03-ui-design/contrast-audit.md</code>；设计规范见 <code>03-ui-design/design-system.md</code>；
+      移动端长文专项见 <code>03-ui-design/mobile-review.md</code>。</p>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
+
+const endpoint = site.newsletter.endpoint;
+---
+<BaseLayout
+  title="The Newsletter — One Essay Every Other Tuesday"
+  description="A letter every other Tuesday: one long-form essay on building software, delivered in full. No link roundups, no sponsors, no tracking pixels."
+  path="/newsletter"
+>
+  <div class="container">
+    <div class="newsletter-wrap">
+      <div class="eyebrow mono">The irregular letter</div>
+      <h1>One essay, every other Tuesday.</h1>
+      <p class="lede">
+        The essays on this site, delivered in full, without asking you to visit a feed reader
+        or a social network. Written for engineers who prefer depth to volume.
+      </p>
+
+      <div class="newsletter-box">
+        <h2>What you get</h2>
+        <ul>
+          <li>One long-form essay per issue — the same text published here.</li>
+          <li>Occasional notes on what I got wrong, and what changed as a result.</li>
+          <li>No sponsor slots, no “quick tips,” no AI-generated filler.</li>
+          <li>Cadence: {site.newsletter.cadence.toLowerCase()}. Pauses are announced, not ghosted.</li>
+        </ul>
+
+        {endpoint ? (
+          <form class="newsletter-form" action={endpoint} method="post" target="_blank">
+            <div class="field">
+              <label class="mono" for="newsletter-email">Email address</label>
+              <input
+                id="newsletter-email"
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+            <button class="btn btn-primary" type="submit">Subscribe</button>
+            <p class="newsletter-note">{site.newsletter.privacy}</p>
+          </form>
+        ) : (
+          <div>
+            <p style="margin-top:14px">
+              The signup form is still being connected. In the meantime, send a short email and
+              I will add you to the list by hand.
+            </p>
+            <p style="margin-top:14px">
+              <a
+                class="btn btn-primary"
+                href={`mailto:${site.author.email}?subject=${encodeURIComponent('Subscribe me to the newsletter')}&body=${encodeURIComponent('Hi Jin, please add this address to the newsletter. Thanks!')}`}
+              >
+                Subscribe by email
+              </a>
+            </p>
+            <p class="newsletter-note">
+              One email per issue. Unsubscribe at any time by replying.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;margin-bottom:10px">
+        Prefer not to share an address?
+      </h2>
+      <p style="color:var(--ink-soft);margin-bottom:20px">
+        The <a href="/rss.xml">RSS feed</a> contains the full text of every essay, including
+        this one. It is the same content, without an inbox.
+      </p>
+
+      <div class="newsletter-box">
+        <h2>What an issue looks like</h2>
+        <p style="color:var(--ink-soft)">
+          A short note about why the topic matters, the essay itself, and — when relevant —
+          one paragraph about what I would do differently now. That is the whole format.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
