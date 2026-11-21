@@ -84,7 +84,7 @@ A date formatter is not your product. A rich text editor might be. A build tool 
 
 And write down the rent. A sentence in the pull request — "this saves us two days now; we will revisit if we need comments in the editor" — turns an invisible loan into a decision. The interest is still there. At least you know when it is due. The same ledger tells you when a dependency has stopped paying: the question stops being whether to remove it and becomes how small a piece you can replace at a time, which is the case I make in [What I Learned Rewriting a Monolith](/blog/rewriting-the-monolith).
 
-This essay is part of the [Architecture guide](/architecture), which maps the decisions from foundations to migration seams.
+This essay belongs with the other notes on [architecture](/tags/architecture).
 
 ## Further reading
 

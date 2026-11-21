@@ -1,6 +1,6 @@
 # 产品需求文档（PRD）
 
-> Stage 2 · v1.0 · Product: Jin Lo — English engineering blog
+> Stage 2 · v1.0 · Product: Waystone AI — English engineering blog
 > Sources of truth: `01-product-architecture/` (vision, IA, architecture)
 
 ## 1. 概述

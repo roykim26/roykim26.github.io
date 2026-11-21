@@ -2,12 +2,8 @@
 import type { Post } from '../lib/posts';
 import { countWords, readingTime } from '../lib/posts';
 import BaseLayout from './BaseLayout.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import TableOfContents from '../components/TableOfContents.astro';
-import ShareRow from '../components/ShareRow.astro';
-import PostRow from '../components/PostRow.astro';
-import Subscribe from '../components/Subscribe.astro';
-import { absoluteUrl, formatDate, formatIsoDate, guideForPost, site, tagLabel, topicPath } from '../lib/site';
+import TagPill from '../components/TagPill.astro';
+import { absoluteUrl, formatDate, formatIsoDate, site } from '../lib/site';
 
 interface Heading {
   depth: number;
@@ -18,31 +14,13 @@ interface Heading {
 interface Props {
   post: Post;
   headings: Heading[];
-  related: Post[];
   adjacent: { previous: Post | undefined; next: Post | undefined };
 }
 
-const { post, headings, related, adjacent } = Astro.props;
+const { post, adjacent } = Astro.props;
 const published = formatIsoDate(post.data.pubDate);
 const modified = post.data.updatedDate ? formatIsoDate(post.data.updatedDate) : undefined;
 const minutes = readingTime(post);
-
-// 文章挂在所属集群下：guide 内的文章指向 pillar，其余按主标签指向归档。
-const guide = guideForPost(post.id);
-const primaryTag = post.data.tags[0];
-// 面包屑已经承载主题，kicker 不再重复同一标签。
-const topicTag = guide ? guide.tag : primaryTag;
-const secondaryTags = post.data.tags.filter((tag) => tag !== topicTag);
-const topicCrumb = guide
-  ? { label: guide.label, href: guide.path }
-  : primaryTag
-    ? { label: tagLabel(primaryTag), href: topicPath(primaryTag) }
-    : undefined;
-const trail: { label: string; href?: string }[] = [
-  { label: 'Home', href: '/' },
-  ...(topicCrumb ? [topicCrumb] : []),
-  { label: post.data.title },
-];
 
 const schema = [
   {
@@ -52,14 +30,14 @@ const schema = [
     datePublished: published,
     dateModified: modified ?? published,
     author: {
-      '@type': 'Person',
-      '@id': `${site.url}/about#person`,
+      '@type': 'Organization',
+      '@id': `${site.url}/about#organization`,
       name: site.author.name,
       url: absoluteUrl('/about'),
     },
     publisher: {
-      '@type': 'Person',
-      '@id': `${site.url}/about#person`,
+      '@type': 'Organization',
+      '@id': `${site.url}/about#organization`,
       name: site.author.name,
       url: absoluteUrl('/about'),
     },
@@ -91,143 +69,60 @@ const schema = [
   tags={[...post.data.tags]}
   schema={schema}
 >
-  <div class="reading-progress" data-progress aria-hidden="true"></div>
-
-  <article data-article>
+  <article>
     <header class="container post-header">
-      <div class="post-crumbs">
-        <Breadcrumbs items={trail} />
-      </div>
-
-      <div class="post-kicker mono">
-        {secondaryTags.map((tag, index) => (
-          <>
-            {index > 0 && <span class="sep" aria-hidden="true">·</span>}
-            <a href={topicPath(tag)} style="text-decoration:none">{tag}</a>
-          </>
-        ))}
-        {secondaryTags.length > 0 && <span class="sep" aria-hidden="true">·</span>}
-        <span>{minutes} min read</span>
-      </div>
+      <a class="post-back" href="/blog">← All writing</a>
 
       <h1>{post.data.title}</h1>
-      <p class="post-standfirst">{post.data.description}</p>
 
-      <div class="post-byline mono">
-        <span>{site.author.name}</span>
+      <div class="post-kicker">
         <time datetime={published}>{formatDate(post.data.pubDate)}</time>
-        {modified && <span>Updated <time datetime={modified}>{formatDate(post.data.updatedDate!)}</time></span>}
-        <span>{countWords(post.body).toLocaleString('en-US')} words</span>
+        <span aria-hidden="true">·</span>
+        <span>{minutes} min read</span>
+        <span aria-hidden="true">·</span>
+        <span>
+          {post.data.tags.map((tag, index) => (
+            <>{index > 0 && ', '}<TagPill name={tag} href={`/tags/${tag}`} /></>
+          ))}
+        </span>
       </div>
+
+      <p class="post-standfirst">{post.data.description}</p>
     </header>
 
     <div class="container post-shell">
-      <aside class="post-aside">
-        <TableOfContents headings={headings} variant="desktop" />
-      </aside>
-
-      <div>
-        <TableOfContents headings={headings} variant="mobile" />
-
-        <div class="prose">
-          <slot />
-        </div>
-
-        <footer class="post-footer">
-          <ShareRow post={post} />
-
-          <div class="author-card">
-            <div class="author-avatar" aria-hidden="true">JL</div>
-            <div>
-              <h2>Written by {site.author.name}</h2>
-              <p>{site.author.bio}</p>
-              <a href="/about">About the author →</a>
-            </div>
-          </div>
-
-          <nav class="adjacent" aria-label="Adjacent essays">
-            {adjacent.previous ? (
-              <a href={`/blog/${adjacent.previous.id}`}>
-                <span class="label mono">← Previous essay</span>
-                <span class="title">{adjacent.previous.data.title}</span>
-              </a>
-            ) : (
-              <span aria-hidden="true"></span>
-            )}
-            {adjacent.next ? (
-              <a href={`/blog/${adjacent.next.id}`}>
-                <span class="label mono">Next essay →</span>
-                <span class="title">{adjacent.next.data.title}</span>
-              </a>
-            ) : (
-              <span aria-hidden="true"></span>
-            )}
-          </nav>
-
-          {related.length > 0 && (
-            <section class="related" aria-labelledby="related-title">
-              <h2 id="related-title">Related reading</h2>
-              <div class="post-list">
-                {related.map((item) => <PostRow post={item} compact showDescription />)}
-              </div>
-            </section>
-          )}
-        </footer>
+      <div class="prose">
+        <slot />
       </div>
-    </div>
 
-    <div class="container" style="margin-top:56px">
-      <Subscribe />
+      <footer class="post-footer">
+        <nav class="adjacent" aria-label="Adjacent essays">
+          {adjacent.previous ? (
+            <a href={`/blog/${adjacent.previous.id}`}>
+              <span class="label">← Previous essay</span>
+              <span class="title">{adjacent.previous.data.title}</span>
+            </a>
+          ) : (
+            <span aria-hidden="true"></span>
+          )}
+          {adjacent.next ? (
+            <a href={`/blog/${adjacent.next.id}`}>
+              <span class="label">Next essay →</span>
+              <span class="title">{adjacent.next.data.title}</span>
+            </a>
+          ) : (
+            <span aria-hidden="true"></span>
+          )}
+        </nav>
+      </footer>
     </div>
   </article>
 </BaseLayout>
 
-<script>
-  const bar = document.querySelector<HTMLElement>('[data-progress]');
-  const article = document.querySelector<HTMLElement>('[data-article]');
-  if (bar && article) {
-    let frame = 0;
-    const update = (): void => {
-      frame = 0;
-      const start = article.offsetTop;
-      const distance = article.offsetHeight - window.innerHeight;
-      const progress = Math.min(1, Math.max(0, (window.scrollY - start) / Math.max(distance, 1)));
-      bar.style.width = `${(progress * 100).toFixed(2)}%`;
-    };
-    const onScroll = (): void => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(update);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    update();
-  }
-
-  // 代码块与表格在窄屏会横向滚动，用右缘渐隐提示还有内容（样式见 global.css）
-  const scrollers = document.querySelectorAll<HTMLElement>('.prose pre, .prose table');
-
-  const markScroller = (el: HTMLElement): void => {
-    if (el.scrollWidth <= el.clientWidth + 1) {
-      el.removeAttribute('data-scroll');
-      return;
-    }
-    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
-    el.setAttribute('data-scroll', atEnd ? 'end' : el.scrollLeft > 2 ? 'middle' : 'start');
-  };
-
-  scrollers.forEach((el) => {
-    markScroller(el);
-    el.addEventListener('scroll', () => markScroller(el), { passive: true });
-  });
-
-  const remarkScrollers = (): void => scrollers.forEach(markScroller);
-  window.addEventListener('resize', remarkScrollers, { passive: true });
-  // 字体加载完成后行宽会变，需要重新判断是否溢出
-  document.fonts.ready.then(remarkScrollers);
-</script>
-
 <style>
-  .post-crumbs {
+  .post-back {
+    display: inline-block;
     margin-bottom: 12px;
+    text-decoration: none;
   }
 </style>

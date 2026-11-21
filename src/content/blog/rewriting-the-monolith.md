@@ -95,7 +95,7 @@ The rollout sequence matters less than the ability to stop. We cut over writes o
 
 The rewrite did not end. The old system still serves that twice-yearly batch job, and I suspect it will outlive the new service. That is fine. The win was not replacing the monolith; it was learning which parts of it were worth keeping, and building a seam that let us decide one route at a time. If you take one thing from this, take the seam. The new code will be rewritten again. A good seam survives.
 
-This essay is part of the [Architecture guide](/architecture), which maps the decisions from foundations to migration seams.
+This essay belongs with the other notes on [architecture](/tags/architecture).
 
 ## Further reading
 

@@ -23,14 +23,12 @@
     {
       "source": "/og/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400" }]
-    },
-    {
-      "source": "/fonts/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ],
   "redirects": [
     { "source": "/feed", "destination": "/rss.xml", "permanent": true },
-    { "source": "/blog/", "destination": "/blog", "permanent": true }
+    { "source": "/blog/", "destination": "/blog", "permanent": true },
+    { "source": "/architecture", "destination": "/about", "permanent": true },
+    { "source": "/performance", "destination": "/about", "permanent": true }
   ]
 }

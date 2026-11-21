@@ -1,11 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostRow from '../../components/PostRow.astro';
-import { collectTags, getPosts, groupByYear } from '../../lib/posts';
-import { topicPath } from '../../lib/site';
+import { getPosts, groupByYear } from '../../lib/posts';
 
 const posts = await getPosts();
-const tags = collectTags(posts);
 const groups = groupByYear(posts);
 ---
 <BaseLayout
@@ -15,103 +13,23 @@ const groups = groupByYear(posts);
 >
   <div class="container">
     <header class="page-head">
-      <div class="eyebrow mono">The archive</div>
       <h1>Writing</h1>
-      <p class="lede">
-        Field notes, mostly about systems that age badly or surprisingly well. Every essay
-        contains something I actually built, measured, or got wrong.
-      </p>
-      <div class="page-tools">
-        <div class="head-meta mono">
-          <span><span id="filter-count">{posts.length}</span> essays</span>
-          <span aria-hidden="true">·</span>
-          <span>2026 — present</span>
-        </div>
-
-        <button class="search-trigger" type="button" data-search-open>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-            <circle cx="11" cy="11" r="6.5"></circle>
-            <path d="m16 16 4.5 4.5"></path>
-          </svg>
-          <span>Search essays…</span>
-          <kbd>Ctrl K</kbd>
-        </button>
+      <div class="head-row">
+        <p class="lede">
+          Field notes, mostly about systems that age badly or surprisingly well. Every essay
+          contains something I actually built, measured, or got wrong.
+        </p>
+        <a class="head-link" href="/tags">All tags →</a>
       </div>
-
-      <div class="filter-bar" role="group" aria-label="Filter essays by tag">
-        <a class="chip is-active" href="/blog" data-filter="all" aria-pressed="true">All</a>
-        {tags.map((tag) => (
-          <a class="chip" href={topicPath(tag.name)} data-filter={tag.name} aria-pressed="false">
-            {tag.name} <span aria-hidden="true">·</span> {tag.count}
-          </a>
-        ))}
-      </div>
-      <p class="sr-only" role="status" aria-live="polite" data-filter-status></p>
     </header>
 
     {groups.map((group) => (
-      <section class="year-group" data-year-group>
-        <h2 class="year-label mono">{group.year}</h2>
+      <section class="year-group">
+        <h2 class="year-label">{group.year}</h2>
         <div class="post-list">
           {group.posts.map((post) => <PostRow post={post} />)}
         </div>
       </section>
     ))}
-
-    <div class="empty-state" data-empty hidden>
-      <p>Nothing in the archive matches that filter.</p>
-      <button class="btn btn-ghost btn-small" type="button" data-clear-filter>Clear filter</button>
-    </div>
   </div>
 </BaseLayout>
-
-<script>
-  const rows = Array.from(document.querySelectorAll<HTMLElement>('[data-post-row]'));
-  const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-year-group]'));
-  const chips = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-filter]'));
-  const count = document.getElementById('filter-count');
-  const empty = document.querySelector<HTMLElement>('[data-empty]');
-  const status = document.querySelector<HTMLElement>('[data-filter-status]');
-  const clear = document.querySelector<HTMLButtonElement>('[data-clear-filter]');
-
-  const apply = (tag: string): void => {
-    let visible = 0;
-    rows.forEach((row) => {
-      const matches = tag === 'all' || (row.dataset.tags ?? '').split(' ').includes(tag);
-      row.hidden = !matches;
-      if (matches) visible += 1;
-    });
-
-    groups.forEach((group) => {
-      const anyVisible = Array.from(group.querySelectorAll<HTMLElement>('[data-post-row]')).some((row) => !row.hidden);
-      group.hidden = !anyVisible;
-    });
-
-    chips.forEach((chip) => {
-      const active = chip.dataset.filter === tag;
-      chip.classList.toggle('is-active', active);
-      chip.setAttribute('aria-pressed', String(active));
-    });
-
-    if (count) count.textContent = String(visible);
-    if (empty) empty.hidden = visible !== 0;
-    if (status) status.textContent = `${visible} ${visible === 1 ? 'essay' : 'essays'} shown${tag === 'all' ? '' : ` for ${tag}`}.`;
-  };
-
-  chips.forEach((chip) => {
-    chip.addEventListener('click', (event) => {
-      event.preventDefault();
-      apply(chip.dataset.filter ?? 'all');
-    });
-  });
-
-  clear?.addEventListener('click', () => apply('all'));
-
-  // Ctrl/Cmd + K 可在归档页任意位置打开搜索。
-  document.addEventListener('keydown', (event) => {
-    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-      event.preventDefault();
-      document.querySelector<HTMLButtonElement>('[data-search-open]')?.click();
-    }
-  });
-</script>

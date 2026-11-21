@@ -114,7 +114,7 @@ I also check the page at 200% zoom. Fixed heights that look generous at default 
 
 Layout shift is rarely a CSS bug. It is a missing decision about who reserves space, made late in the rendering pipeline. The browser is not being difficult. It is telling you that you forgot to make the decision, and it is telling you in the only language it has.
 
-This essay is part of the [Performance guide](/performance), which connects tail latency, layout stability, and build time.
+This essay belongs with the other notes on [performance](/tags/performance).
 
 ## Further reading
 

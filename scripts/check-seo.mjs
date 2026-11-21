@@ -146,10 +146,8 @@ for (const page of indexableTagPages) {
 }
 for (const entry of sitemapEntries) {
   const loc = entry.match(/<loc>([^<]+)<\/loc>/)?.[1] ?? '';
-  const pathname = new URL(loc).pathname.replace(/\/$/, '');
-  // 文章页与 pillar 页都必须带 lastmod，pillar 的日期取自集群内最新文章。
-  const needsLastmod =
-    loc.includes('/blog/') || pathname === '/architecture' || pathname === '/performance';
+  // 文章页必须带 lastmod。
+  const needsLastmod = loc.includes('/blog/');
   if (!needsLastmod) continue;
   const lastmod = entry.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1] ?? '';
   if (!lastmod) failures.push(`sitemap entry missing lastmod: ${loc}`);

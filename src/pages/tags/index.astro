@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { collectTags, getPosts } from '../../lib/posts';
-import { topicPath } from '../../lib/site';
 
 const posts = await getPosts();
 const tags = collectTags(posts);
@@ -13,17 +12,15 @@ const tags = collectTags(posts);
 >
   <div class="container">
     <header class="page-head">
-      <div class="eyebrow mono">Index</div>
       <h1>Tags</h1>
       <p class="lede">Six threads, followed across the archive. Every essay belongs to at least one.</p>
-      <div class="head-meta mono"><span>{tags.length} topics</span><span aria-hidden="true">·</span><span>{posts.length} essays</span></div>
     </header>
 
-    <div class="tag-index" style="margin-top:32px">
+    <div class="tag-index">
       {tags.map((tag) => (
-        <a class="tag-row" href={topicPath(tag.name)}>
+        <a class="tag-row" href={`/tags/${tag.name}`}>
           <span class="tag-name">{tag.name}</span>
-          <span class="tag-count mono">{String(tag.count).padStart(2, '0')} essays →</span>
+          <span class="tag-count">{String(tag.count).padStart(2, '0')}</span>
         </a>
       ))}
     </div>

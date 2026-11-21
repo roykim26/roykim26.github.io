@@ -28,18 +28,6 @@
   [headers.values]
     Cache-Control = "public, max-age=86400"
 
-# 自托管字体
-[[headers]]
-  for = "/fonts/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# 搜索索引可缓存，但需可更新
-[[headers]]
-  for = "/pagefind/*"
-  [headers.values]
-    Cache-Control = "public, max-age=3600"
-
 # HTML 不缓存，保证发布即时生效
 [[headers]]
   for = "/*.html"
@@ -54,4 +42,14 @@
 [[redirects]]
   from = "/blog/"
   to = "/blog"
+  status = 301
+
+[[redirects]]
+  from = "/architecture"
+  to = "/about"
+  status = 301
+
+[[redirects]]
+  from = "/performance"
+  to = "/about"
   status = 301

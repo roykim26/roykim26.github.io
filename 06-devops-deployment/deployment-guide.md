@@ -72,8 +72,8 @@ npm run preview -- --port 4321
 ### 3.5 自托管：Docker + Nginx
 
 ```bash
-docker build -t jinlo-blog:1.0.0 .
-docker run -d --name blog -p 8080:8080 --restart unless-stopped jinlo-blog:1.0.0
+docker build -t waystone-ai-blog:1.0.0 .
+docker run -d --name blog -p 8080:8080 --restart unless-stopped waystone-ai-blog:1.0.0
 curl -I http://localhost:8080/
 ```
 

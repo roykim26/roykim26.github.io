@@ -4,7 +4,7 @@
  *
  * 作为 `prebuild` 运行，因此 `npm run build` 始终能在 public/og/ 中得到最新图片。
  */
-import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readdir, readFile, mkdir, writeFile, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -13,11 +13,11 @@ const contentDir = path.join(root, 'src', 'content', 'blog');
 const outDir = path.join(root, 'public', 'og');
 const defaultOut = path.join(root, 'public', 'og-default.png');
 
-const paper = '#F6F2E9';
-const ink = '#16130E';
-const soft = '#4A443A';
-const rule = '#D9D1C2';
-const accent = '#B23A1B';
+const paper = '#FBFAF7';
+const ink = '#1C1B18';
+const soft = '#46443D';
+const rule = '#DDDAD1';
+const accent = '#AC512D';
 
 const escapeXml = (value) =>
   String(value)
@@ -70,7 +70,7 @@ function wrapTitle(title, maxChars) {
   return lines.slice(0, 4);
 }
 
-function truncateMeta(value, maxChars = 80) {
+function truncateMeta(value, maxChars = 68) {
   const text = String(value).trim();
   if (text.length <= maxChars) return text;
   const cut = text.slice(0, maxChars - 1);
@@ -111,12 +111,12 @@ function buildSvg({ title, label, meta }) {
   <rect width="1200" height="630" fill="${paper}"/>
   <rect width="1200" height="8" fill="${ink}"/>
   <g font-family="Georgia, 'Times New Roman', serif">
-    <text x="72" y="96" font-size="36" fill="${ink}">Jin Lo<tspan fill="${accent}">.</tspan></text>
+    <text x="72" y="96" font-size="36" fill="${ink}">Waystone AI<tspan fill="${accent}">.</tspan></text>
     <text x="72" y="160" font-family="'Courier New', monospace" font-size="17" letter-spacing="3" fill="${accent}">${escapeXml(label)}</text>
     <text x="72" y="${startY}" font-size="${fontSize}" fill="${ink}">${titleTspans}</text>
     <line x1="72" y1="500" x2="1128" y2="500" stroke="${rule}" stroke-width="1"/>
     <text x="72" y="542" font-family="'Courier New', monospace" font-size="16" letter-spacing="2" fill="${soft}">${escapeXml(meta)}</text>
-    <text x="1128" y="542" text-anchor="end" font-family="'Courier New', monospace" font-size="16" letter-spacing="2" fill="${soft}">JINLO.DEV</text>
+    <text x="1128" y="542" text-anchor="end" font-family="'Courier New', monospace" font-size="16" letter-spacing="2" fill="${soft}">WAYSTONEAI.ONLINE</text>
   </g>
   <circle cx="1128" cy="90" r="6" fill="${accent}"/>
 </svg>`;
@@ -128,6 +128,10 @@ async function render(svg, file) {
 
 async function main() {
   await mkdir(outDir, { recursive: true });
+
+  // 内容集合可能删过文章；先清掉旧卡片，避免过期 OG 继续被发布。
+  const stale = (await readdir(outDir)).filter((file) => file.endsWith('.png'));
+  await Promise.all(stale.map((file) => unlink(path.join(outDir, file))));
 
   let files = [];
   try {

@@ -80,7 +80,7 @@ Before adding anything to the stack, I run through this list. If more than one i
 
 The goal is not to be boring forever. The goal is to spend your novelty budget on the one or two places where it changes the product, and to make everywhere else as unremarkable as possible. Most systems do not need a more interesting architecture. They need a smaller one, with fewer ways to fail, run by people who can see all of it at once.
 
-This essay is part of the [Architecture guide](/architecture), which maps the decisions from foundations to migration seams.
+This essay belongs with the other notes on [architecture](/tags/architecture).
 
 ## Further reading
 

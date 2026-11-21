@@ -33,7 +33,7 @@
 
 | 元素 | 规则 |
 | --- | --- |
-| `<title>` | `{Post title} · Jin Lo`；首页：`Jin Lo — Engineering Notes`；建议 ≤ 60 字符 |
+| `<title>` | `{Post title} · Waystone AI`；首页：`Waystone AI — Engineering Notes`；建议 ≤ 60 字符 |
 | Meta description | 120–160 字符，唯一，写成承诺；绝不在词中间自动截断 |
 | H1 | 每页恰好一个；与标题意图一致，不要求完全相同 |
 | 标题层级 | 逻辑清晰的 h2/h3 层级，不跳级；h2/h3 带锚点 |

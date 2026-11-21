@@ -1,10 +1,10 @@
-# 产品愿景 — Jin Lo
+# 产品愿景 — Waystone AI
 
 > Status: Approved for v1.0 · Owner: Founder / Editor · Last updated: 2026-11-13
 
 ## 1. 一句话定位
 
-**Jin Lo 是一个英文个人博客，由一位在职软件工程师撰写长篇实战笔记，主题是构建能够经受现实考验的系统。**
+**Waystone AI 是一个英文工程博客，由一位在职软件工程师撰写长篇实战笔记，主题是构建能够经受现实考验的系统。**
 
 不是教程农场，不是新闻聚合器，也不是个人日记。它是一份小而克制、声音有辨识度的出版物。
 
@@ -66,12 +66,12 @@
 
 | 元素 | 决策 |
 | --- | --- |
-| 名称 | **Jin Lo**（人名；站点标题 “Jin Lo — Engineering Notes”） |
+| 名称 | **Waystone AI**（品牌名；站点标题 “Waystone AI — Engineering Notes”） |
 | 标语 | *Field notes on software that survives contact with reality.* |
 | 声音 | 直接、具体、冷幽默、零炒作。第一人称。短句。 |
 | 视觉基调 | 编辑式的纸与墨：温暖的米白、近黑、朱红点缀，衬线标题，等宽元信息 |
-| 域名（占位） | `jinlo.dev` — 可在 `src/lib/site.ts` 中配置 |
-| 联系方式 | `hello@jinlo.dev`（占位，已在文档中注明需替换） |
+| 域名（占位） | `waystoneai.online` — 可在 `src/lib/site.ts` 中配置 |
+| 联系方式 | `hello@blog.waystoneai.online`（占位，已在文档中注明需替换） |
 
 ## 9. 风险与缓解
 

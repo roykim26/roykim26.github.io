@@ -9,19 +9,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   canonical={false}
 >
   <div class="container">
-    <div class="notfound">
-      <div class="code" aria-hidden="true">4<em>0</em>4</div>
-      <h1>Lost in the margins.</h1>
-      <p>
-        The link you followed does not point to an essay, a tag, or a page that exists. It may
-        have been an old URL, or a typo with good intentions.
+    <section class="page-404">
+      <p class="code-label">404</p>
+      <h1>Page not found.</h1>
+      <p>That link does not point to anything here. It may have been an old URL, or a typo.</p>
+      <p class="notfound-links">
+        <a href="/blog">All writing →</a>
+        <a href="/">Home →</a>
       </p>
-      <div class="notfound-links">
-        <a class="btn btn-primary" href="/blog">Read the writing</a>
-        <a class="btn btn-ghost" href="/tags">Browse tags</a>
-        <a class="btn btn-ghost" href="/">Go home</a>
-        <button class="btn btn-ghost" type="button" data-search-open>Search</button>
-      </div>
-    </div>
+    </section>
   </div>
 </BaseLayout>

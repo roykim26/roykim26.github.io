@@ -1,5 +1,9 @@
 # 页面设计
 
+> **已被取代（2026-11-21，v1.0 历史稿）**：本文件描述的是 v1 页面结构，与现行实现不一致。现行唯一事实来源是 [design-v2-direction.md](design-v2-direction.md)（v2.2）。
+> 现行 8 个页面：`/`、`/blog`、`/blog/[slug]`、`/tags`、`/tags/[tag]`、`/about`、`/newsletter`、`/404`。
+> 主要变化：首页为名字 + 简介 + 最近 8 篇 + 通栏订阅色带；文章页单栏 66ch，去目录/分享/作者卡/相关阅读；归档按年份分组、去筛选与搜索；页头 56px 静态、页脚单行。
+
 > 阶段 3 · v1.0 · 桌面参考尺寸 1280×800，移动参考尺寸 390×844。
 > Token 与组件规则见 `design-system.md`。可交互样式表见 `design-preview.html`。
 
@@ -7,7 +11,7 @@
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│ Jin Lo.        WRITING   TAGS   ABOUT          [☾]              │ 64px sticky
+│ Waystone AI.   WRITING   TAGS   ABOUT          [☾]              │ 64px sticky
 ├──────────────────────────────────────────────────────────────────┤
 │ ENGINEERING NOTES · EST. 2026                                    │
 │                                                                  │
@@ -15,7 +19,7 @@
 │  that survives contact              │   "The best systems are  │ │
 │  with reality.                      │    the ones you forget   │ │
 │                                     │    you own."             │ │
-│  I'm Jin — I build and maintain     │                          │ │
+│  I build and maintain               │                          │ │
 │  systems for a living…              │   — from the archive     │ │
 │                                     └──────────────────────────┘ │
 │  [ Read the latest → ]  [ About ]                                │
@@ -48,7 +52,7 @@
 │  [ you@example.com            ] [ Subscribe ]                    │
 │  Prefer a feed? RSS →                                            │
 ├──────────────────────────────────────────────────────────────────┤
-│ Jin Lo.          WRITING TAGS ABOUT RSS      © 2026  COLOPHON    │
+│ Waystone AI.     WRITING TAGS ABOUT RSS      © 2026  COLOPHON    │
 └──────────────────────────────────────────────────────────────────┘
 ```
 首屏高度：在 1280×800 下，eyebrow + H1 + 段落 + CTA 合计约 520px，因此
@@ -57,7 +61,7 @@
 ## 2. 文章索引 `/blog`
 
 ```
-Jin Lo.        WRITING   TAGS   ABOUT          [⌕] [☾]
+Waystone AI.   WRITING   TAGS   ABOUT          [⌕] [☾]
 ────────────────────────────────────────────────────────
 Writing                                     12 essays
 Field notes, mostly about systems that age badly.
@@ -82,7 +86,7 @@ Field notes, mostly about systems that age badly.
 ## 3. 文章页 `/blog/<slug>`
 
 ```
-Jin Lo.        WRITING   TAGS   ABOUT          [⌕] [☾]
+Waystone AI.   WRITING   TAGS   ABOUT          [⌕] [☾]
 ──────────── 2px accent progress ──────────────────────
                                   ARCHITECTURE · 02 JUN 2026 · 6 MIN READ
                                   The Case for Boring
@@ -90,7 +94,7 @@ Jin Lo.        WRITING   TAGS   ABOUT          [⌕] [☾]
                                   Everyone wants the interesting choice. The
                                   interesting choice is usually the one you pay
                                   for at 3 a.m.
-                                  BY JIN LO · UPDATED 20 JUN 2026
+                             BY WAYSTONE AI · UPDATED 20 JUN 2026
 CONTENTS                ─────────────────────────────────────────
   The upgrade tax       The upgrade tax
   Three questions       ─────────────────────────────────────────
@@ -103,7 +107,7 @@ CONTENTS                ──────────────────�
                         └───────────────────────────────────────┘
                         [ Share on X ] [ LinkedIn ] [ Copy link ]
                         ┌───────────────────────────────────────┐
-                        │ JIN LO  Engineer, writer. Builds…      │
+                        │ WAYSTONE AI  Engineer, writer. Builds… │
                         └───────────────────────────────────────┘
                         ← Previous                    Next →
                         RELATED

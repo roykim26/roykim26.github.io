@@ -1,5 +1,9 @@
 # UI 复查与收敛改造
 
+> **已被取代**：本文记录的是 v1.1 的收敛过程（朱红 `#B23A1B` + 旧纸色），
+> 现行设计见 [design-v2-direction.md](design-v2-direction.md)，现行对比度结论见
+> [contrast-audit-v2.md](contrast-audit-v2.md)。仅作历史记录保留。
+
 > 阶段 3 · v1.1 · 2026-11-13
 > 范围：首页 `/`、归档列表 `/blog`、文章页 `/blog/<slug>`；亮 / 暗双主题；390 / 768 / 1440 三个断点
 > 关联文档：[design-system.md](design-system.md) · 实现：[global.css](../src/styles/global.css)

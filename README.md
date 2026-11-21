@@ -1,4 +1,4 @@
-# Jin Lo — Engineering Notes
+# Waystone AI — Engineering Notes
 
 面向海外读者的英文个人技术博客。静态生成、零后端、以阅读体验和 SEO 为第一优先级。
 
@@ -94,9 +94,9 @@ draft: false               # true 时不会出现在任何页面、RSS、sitemap
 
 | 项目 | 当前占位 | 说明 |
 | --- | --- | --- |
-| 域名 | `https://jinlo.dev` | 同时修改 `site.ts` 与 `astro.config.mjs` 的 `site` |
-| 作者名 | `Jin Lo` | 导航、页脚、结构化数据、OG 卡片都会引用 |
-| 邮箱 | `hello@jinlo.dev` | 订阅兜底与 Contact |
+| 域名 | `https://blog.waystoneai.online` | 同时修改 `site.ts` 与 `astro.config.mjs` 的 `site` |
+| 品牌名 | `Waystone AI` | 导航、页脚、结构化数据、OG 卡片都会引用 |
+| 邮箱 | `hello@blog.waystoneai.online` | 订阅兜底与 Contact |
 | 社交链接 | 空字符串 | 留空时自动隐藏，填入后出现在 About/页脚 |
 | 邮件订阅端点 | 空字符串 | 留空时显示 mailto 兜底；填入后启用表单 |
 | 分析工具 | 未接入 | 默认无分析；接入方式见 `07-launch-operations/analytics-and-growth.md` |
@@ -117,7 +117,7 @@ CI（`.github/workflows/ci.yml`）会在每次 push / PR 时执行以上全部�
 
 - 首选：Cloudflare Pages（构建命令 `npm run build`，输出目录 `dist`）
 - 备选：Vercel（`vercel.json`）、Netlify（`netlify.toml`）、GitHub Pages（`.github/workflows/deploy-pages.yml`）
-- 自托管：`docker build -t jinlo-blog . && docker run -p 8080:8080 jinlo-blog`
+- 自托管：`docker build -t waystone-ai-blog . && docker run -p 8080:8080 waystone-ai-blog`
 
 完整步骤、环境变量、回滚与故障处理见 `06-devops-deployment/deployment-guide.md` 与
 `06-devops-deployment/runbook.md`。

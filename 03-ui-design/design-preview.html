@@ -1,9 +1,10 @@
 <!doctype html>
+<!-- 已被取代：v1 设计快照，沿用旧纸色与朱红 #B23A1B；现行设计见 design-v2-direction.md。仅作历史记录保留。 -->
 <html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Jin Lo — 设计系统 v1.0</title>
+<title>Waystone AI — 设计系统 v1.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -189,7 +190,7 @@
 <body>
 <header class="doc-head">
   <div class="wrap bar">
-    <a class="wordmark" href="#top">Jin Lo<b>.</b></a>
+    <a class="wordmark" href="#top">Waystone AI<b>.</b></a>
     <nav aria-label="设计样张章节">
       <a href="#palette">调色板</a>
       <a href="#type">字体</a>
@@ -312,14 +313,14 @@
 
     <div class="mock" aria-label="首页布局构成">
       <div class="mock-bar">
-        <span class="wordmark" style="font-size:1.1rem">Jin Lo<b>.</b></span>
+        <span class="wordmark" style="font-size:1.1rem">Waystone AI<b>.</b></span>
         <nav><span>WRITING</span><span>TAGS</span><span>ABOUT</span><span>☾</span></nav>
       </div>
       <div class="mock-hero">
         <div>
           <div class="eyebrow mono" style="font-size:.5rem">Engineering notes · est. 2026</div>
           <h3>Field notes on software that survives <em>contact</em>.</h3>
-          <p>I’m Jin — I build and maintain systems for a living, and write down what actually held up.</p>
+          <p>I build and maintain systems for a living, and write down what actually held up.</p>
           <span class="btn btn-primary" style="min-height:36px;font-size:.5625rem">Read the latest →</span>
         </div>
         <div class="plate">
@@ -351,7 +352,7 @@
 
     <div class="mock" style="margin-top:24px" aria-label="文章页布局构成">
       <div class="mock-bar">
-        <span class="wordmark" style="font-size:1.1rem">Jin Lo<b>.</b></span>
+        <span class="wordmark" style="font-size:1.1rem">Waystone AI<b>.</b></span>
         <nav><span>WRITING</span><span>TAGS</span><span>ABOUT</span><span>⌕</span></nav>
       </div>
       <div class="post-mock">
@@ -405,21 +406,21 @@
 </main>
 
 <footer class="wrap doc-foot">
-  <span class="mono">Jin Lo — 设计系统 v1.0</span>
+  <span class="mono">Waystone AI — 设计系统 v1.0</span>
   <span class="mono">WCAG 2.2 AA · 浅色与深色 · 不使用图库素材</span>
 </footer>
 
 <script>
   const root = document.documentElement;
   const btn = document.getElementById('themeBtn');
-  const stored = localStorage.getItem('jl-theme');
+  const stored = localStorage.getItem('ws-theme');
   if (stored) root.dataset.theme = stored;
   else if (matchMedia('(prefers-color-scheme: dark)').matches) root.dataset.theme = 'dark';
   const sync = () => { btn.textContent = root.dataset.theme === 'dark' ? '☀' : '☾'; };
   sync();
   btn.addEventListener('click', () => {
     root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    localStorage.setItem('jl-theme', root.dataset.theme);
+    localStorage.setItem('ws-theme', root.dataset.theme);
     sync();
   });
 </script>

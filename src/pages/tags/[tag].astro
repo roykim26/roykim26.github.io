@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostRow from '../../components/PostRow.astro';
 import { getPosts, type Post } from '../../lib/posts';
-import { guideForTag, tagLabel } from '../../lib/site';
+import { tagLabel } from '../../lib/site';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -20,12 +20,10 @@ interface Props {
 const { tag } = Astro.props;
 const posts = (await getPosts()).filter((post: Post) => post.data.tags.includes(tag));
 
-// 少于 3 篇文章的标签页属于薄内容；有独立 pillar 页的主题（见 src/data/topic-guides.json）
-// 也降级为归档。两者都保留可访问性，但不让搜索引擎索引。
+// 少于 3 篇文章的标签页属于薄内容：保留可访问性，但不让搜索引擎索引。
 // 需与 astro.config.mjs 中的 MIN_POSTS_FOR_INDEX 保持一致。
 const MIN_POSTS_FOR_INDEX = 3;
-const pillarPath = guideForTag(tag)?.path;
-const isIndexable = !pillarPath && posts.length >= MIN_POSTS_FOR_INDEX;
+const isIndexable = posts.length >= MIN_POSTS_FOR_INDEX;
 
 const title = tagLabel(tag);
 
@@ -55,40 +53,16 @@ const fallbackDescription =
 >
   <div class="container">
     <header class="page-head">
-      <a class="mono" href="/tags" style="text-decoration:none">← All tags</a>
       <h1>{title}</h1>
-      <p class="lede">{descriptions[tag] ?? fallbackDescription}</p>
-      <div class="head-meta mono">
-        <span>{posts.length} {posts.length === 1 ? 'essay' : 'essays'}</span>
-        <span aria-hidden="true">·</span>
-        <span>Tagged “{tag}”</span>
-      </div>
-      {pillarPath && (
-        <p class="pillar-note">
-          This is the tag archive. Read the <a href={pillarPath}>{title} guide</a> for the
-          curated path through these essays.
-        </p>
-      )}
+      <p class="lede">
+        {String(posts.length).padStart(2, '0')} essays on {title}, newest first.
+      </p>
     </header>
 
     <div class="post-list" style="margin-top:24px">
       {posts.map((post) => <PostRow post={post} />)}
     </div>
+
+    <p class="page-back"><a href="/tags">← All tags</a></p>
   </div>
 </BaseLayout>
-
-<style>
-  .pillar-note {
-    max-width: 60ch;
-    margin-top: 20px;
-    padding: 14px 16px;
-    border: 1px solid var(--rule);
-    background: var(--bg-raised);
-    color: var(--ink-soft);
-    font-size: var(--fs-sm);
-  }
-
-  .pillar-note a {
-    color: var(--ink);
-  }
-</style>

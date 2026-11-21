@@ -99,7 +99,7 @@ The order matters. Doing these out of order produces a faster pipeline that nobo
 
 A pipeline is a product because it has users, a failure mode, and a budget. Build time is a feature; flakiness is churn. The best compliment a pipeline can get is that nobody talks about it. The same is true of a monolith you have finished [rewriting](/blog/rewriting-the-monolith): the goal is not to make it interesting, it is to make it boring enough that the team can forget it and go build the product. The pages it ships deserve the same treatment — [a layout that never shifts](/blog/cls-in-practice) is one the reader never has to think about either. And when the pipeline does get slow, measure it the way you would measure an API — by percentile and population, as I described in [A Field Guide to Slow APIs](/blog/slow-apis).
 
-This essay is part of the [Performance guide](/performance), which connects tail latency, layout stability, and build time.
+This essay belongs with the other notes on [performance](/tags/performance).
 
 ## Further reading
 

@@ -10,21 +10,18 @@ const isActive = (href: string): boolean => {
 ---
 <header class="site-header">
   <div class="container header-inner">
-    <a class="wordmark" href="/" aria-label={`${site.name} — home`}>Jin Lo<span class="dot">.</span></a>
+    <a class="wordmark" href="/" aria-label={`${site.name} — home`}>
+      <img class="brand-lockup brand-lockup--light" src="/brand-lockup.svg" alt="Waystone AI" width="150" height="38" />
+      <img class="brand-lockup brand-lockup--dark" src="/brand-lockup-dark.svg" alt="Waystone AI" width="150" height="38" />
+    </a>
 
     <div class="header-actions">
       <nav class="primary-nav" aria-label="Primary">
         {site.nav.map((item) => (
           <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
         ))}
+        <a href="/rss.xml">RSS</a>
       </nav>
-
-      <button class="icon-btn" type="button" data-search-open aria-label="Search essays">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <circle cx="11" cy="11" r="6.5"></circle>
-          <path d="m16 16 4.5 4.5"></path>
-        </svg>
-      </button>
 
       <button class="icon-btn theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark theme">
         <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -66,7 +63,7 @@ const isActive = (href: string): boolean => {
     const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
     root.dataset.theme = next;
     try {
-      localStorage.setItem('jl-theme', next);
+      localStorage.setItem('ws-theme', next);
     } catch {
       /* 存储不可用；本页面仍会应用主题 */
     }

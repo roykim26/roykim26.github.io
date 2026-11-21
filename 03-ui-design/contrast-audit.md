@@ -1,5 +1,9 @@
 # 对比度核算
 
+> **已被取代**：本文件基于 v1.1 调色板（纸色 `#F6F2E9` / 朱红 `#B23A1B`），站点改用
+> Waystone AI 品牌色后已不适用。当前结论见 [contrast-audit-v2.md](contrast-audit-v2.md)。
+> 本文件仅作为当时的审计过程记录保留。
+
 > 阶段 3 · 2026-11-13 · 基准：[design-system.md](design-system.md) v1.1 的对比度条款
 > 核算对象：`src/styles/global.css` 的实际 token 与构建产物在浏览器中的真实渲染
 > 结论：**首轮发现 6 类未达标项，修正后全部通过**。修改面为「新增 1 个 token + 4 处声明 + 1 处构建配置」，

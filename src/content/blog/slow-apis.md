@@ -97,7 +97,7 @@ None of this requires a new observability vendor. It requires one afternoon, a d
 
 The last thing I do is write down what the slow request was, because in six months someone will report the same symptom and the fastest path is the note. That is also why I treat reproducible traces as a deliverable rather than a byproduct; [the build pipeline as a product](/blog/build-pipeline-as-product) is the same idea applied to CI. A slow API is rarely a mystery. It is usually one unexamined assumption, repeated a few thousand times an hour.
 
-This essay is part of the [Performance guide](/performance), which connects tail latency, layout stability, and build time.
+This essay belongs with the other notes on [performance](/tags/performance).
 
 ## Further reading
 

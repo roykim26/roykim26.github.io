@@ -4,45 +4,30 @@ import { absoluteUrl, site } from '../lib/site';
 
 const aboutSchema = [
   {
-    '@type': 'ProfilePage',
+    '@type': 'AboutPage',
     '@id': absoluteUrl('/about'),
     url: absoluteUrl('/about'),
     name: `About ${site.author.name}`,
     description: site.author.bio,
     inLanguage: 'en',
-    mainEntity: { '@id': `${site.url}/about#person` },
+    mainEntity: { '@id': `${site.url}/about#organization` },
   },
 ];
 ---
 <BaseLayout
-  title="About — A Working Engineer"
-  description="About Jin Lo — a software engineer writing about architecture, performance, and the craft of building systems that last."
+  title="About — Waystone AI"
+  description="About Waystone AI — engineering notes from a working software engineer on architecture, performance, and the craft of building systems that last."
   path="/about"
   schema={aboutSchema}
 >
   <div class="container">
     <header class="page-head">
-      <div class="eyebrow mono">About</div>
       <h1>A working engineer, writing things down.</h1>
-      <p class="lede">No personal brand, no growth funnel. Just the notes I wish I had found earlier.</p>
+      <p class="lede">No growth funnel, no algorithmic feed. Just the notes we wish we had found earlier.</p>
     </header>
 
-    <div class="about-grid">
-      <aside class="about-aside">
-        <div class="avatar-plate" aria-hidden="true"><span>JL</span></div>
-        <h2>{site.author.name}</h2>
-        <p>{site.author.role}<br />{site.author.location}</p>
-        <div class="aside-links">
-          <a href={`mailto:${site.author.email}`}>Email</a>
-          <a href="/rss.xml">RSS feed</a>
-          {site.author.github && <a href={site.author.github} rel="me noopener noreferrer">GitHub</a>}
-          {site.author.x && <a href={site.author.x} rel="me noopener noreferrer">X / Twitter</a>}
-          {site.author.linkedin && <a href={site.author.linkedin} rel="me noopener noreferrer">LinkedIn</a>}
-        </div>
-      </aside>
-
-      <div class="about-body">
-        <h2>What I do</h2>
+    <div class="about-body">
+      <h2>What I do</h2>
         <p>
           I build and maintain backend systems: APIs, data pipelines, and the unglamorous
           glue that keeps a product running on a Tuesday. Most of my work happens at the
@@ -82,10 +67,42 @@ const aboutSchema = [
           <li>No sponsors, affiliate links, or paid placement. The arguments are mine.</li>
         </ul>
 
+        <h2>Start here</h2>
+        <p>
+          If you are new, these six essays cover the two threads that run through most of
+          what I write: what a system costs to change, and what it costs to use.
+        </p>
+        <ul class="start-list">
+          <li>
+            <a href="/blog/boring-architecture">Boring is a budget</a> — novelty is finite;
+            spend it where it changes the product.
+          </li>
+          <li>
+            <a href="/blog/cost-of-convenience">Convenience is a loan</a> — every abstraction
+            borrows against future understanding, and the interest comes due when it leaks.
+          </li>
+          <li>
+            <a href="/blog/rewriting-the-monolith">A rewrite is a bet; a seam is a hedge</a> —
+            strangle the old system one route at a time, with a rehearsed rollback.
+          </li>
+          <li>
+            <a href="/blog/slow-apis">Averages hide the failure</a> — read the p95 and fix the
+            tail instead of the average.
+          </li>
+          <li>
+            <a href="/blog/cls-in-practice">Layout shift is a missing reservation</a> — decide
+            how much space to reserve before paint, not after.
+          </li>
+          <li>
+            <a href="/blog/build-pipeline-as-product">Build time is user-facing too</a> — treat
+            pipeline latency as a product metric with a budget.
+          </li>
+        </ul>
+
         <h2>What I write about</h2>
         <ul>
-          <li><a href="/architecture">Architecture</a> — boundaries, migrations, and long-lived decisions.</li>
-          <li><a href="/performance">Performance</a> — what readers actually experience, measured.</li>
+          <li><a href="/tags/architecture">Architecture</a> — boundaries, migrations, and long-lived decisions.</li>
+          <li><a href="/tags/performance">Performance</a> — what readers actually experience, measured.</li>
           <li><a href="/tags/engineering">Engineering</a> — types, tests, and tools that pay rent.</li>
           <li><a href="/tags/devops">DevOps</a> — pipelines and operations without heroics.</li>
           <li><a href="/tags/career">Career</a> — focus, feedback, and working across cultures.</li>
@@ -102,12 +119,11 @@ const aboutSchema = [
         </p>
 
         <p class="colophon">
-          <strong>Colophon.</strong> Set in Instrument Serif and Newsreader, with JetBrains
-          Mono for metadata. Built with Astro, statically rendered, no client framework, no
+          <strong>Colophon.</strong> Set in Georgia and the system UI fonts, with a system
+          monospace for code. Built with Astro, statically rendered, no client framework, no
           analytics by default. Hosted on a CDN. The source is plain Markdown in a git
           repository — the most durable CMS I know.
         </p>
-      </div>
     </div>
   </div>
 </BaseLayout>

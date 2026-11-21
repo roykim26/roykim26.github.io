@@ -33,7 +33,7 @@ const pageTitle = title === site.title ? title : `${title} · ${site.name}`;
 const canonical = absoluteUrl(path);
 const imageUrl = absoluteUrl(image);
 
-const personId = `${site.url}/about#person`;
+const orgId = `${site.url}/about#organization`;
 const sameAs: string[] = [
   site.author.github,
   site.author.x,
@@ -48,16 +48,21 @@ const baseSchema = [
     url: site.url,
     description: site.description,
     inLanguage: 'en',
-    publisher: { '@id': personId },
+    publisher: { '@id': orgId },
   },
   {
-    '@type': 'Person',
-    '@id': personId,
+    '@type': 'Organization',
+    '@id': orgId,
     name: site.author.name,
     url: absoluteUrl('/about'),
     description: site.author.bio,
-    jobTitle: site.author.role,
     email: `mailto:${site.author.email}`,
+    logo: {
+      '@type': 'ImageObject',
+      url: absoluteUrl('/icon-512.png'),
+      width: 512,
+      height: 512,
+    },
     knowsAbout: [
       'Software architecture',
       'Web performance',
@@ -76,19 +81,14 @@ const baseSchema = [
 {includeCanonical && <link rel="canonical" href={canonical} />}
 <meta name="generator" content={Astro.generator} />
 <meta name="robots" content={robots} />
-<meta name="theme-color" content="#F6F2E9" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#121110" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#FBFAF7" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#141311" media="(prefers-color-scheme: dark)" />
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+<link rel="manifest" href="/site.webmanifest" />
 <link rel="alternate" type="application/rss+xml" title={`${site.name} — Essays`} href="/rss.xml" />
-
-<link
-  rel="preload"
-  href="/fonts/instrument-serif-400.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin
-/>
 
 <meta property="og:type" content={type} />
 <meta property="og:site_name" content={site.name} />
@@ -118,7 +118,7 @@ const baseSchema = [
 <script is:inline>
   (function () {
     try {
-      var stored = localStorage.getItem('jl-theme');
+      var stored = localStorage.getItem('ws-theme');
       var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.dataset.theme = theme;
     } catch (e) {

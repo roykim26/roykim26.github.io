@@ -71,32 +71,10 @@ const { lastmods: postLastmods, tagCounts } = await readPostIndex();
 // 标签页索引门槛：少于 3 篇文章的标签页为薄内容，不进入 sitemap。
 // 需与 src/pages/tags/[tag].astro 中的 MIN_POSTS_FOR_INDEX 保持一致。
 const MIN_POSTS_FOR_INDEX = 3;
-const thinTagPaths = new Set(
+const unindexedTagPaths = new Set(
   [...tagCounts]
     .filter(([, count]) => count < MIN_POSTS_FOR_INDEX)
     .map(([tag]) => `/tags/${tag}`),
-);
-
-// 主题集群的唯一来源：与 src/lib/site.ts 共用同一份 JSON。
-const { guides } = JSON.parse(
-  await readFile(path.join(process.cwd(), 'src', 'data', 'topic-guides.json'), 'utf8'),
-);
-
-// 有独立 pillar 页的主题：标签归档保留可访问性但设为 noindex，也不进入 sitemap。
-const PILLAR_TAG_PATHS = new Set(guides.map((guide) => `/tags/${guide.tag}`));
-const unindexedTagPaths = new Set([...thinTagPaths, ...PILLAR_TAG_PATHS]);
-
-// pillar 页没有自己的日期，sitemap 用集群内最新文章的日期作为 lastmod。
-const pillarLastmods = new Map(
-  guides.map((guide) => {
-    const dates = guide.posts
-      .map((id) => postLastmods.get(`/blog/${id}`))
-      .filter((date) => date instanceof Date);
-    const newest = dates.length
-      ? new Date(Math.max(...dates.map((date) => date.valueOf())))
-      : undefined;
-    return [guide.path, newest];
-  }),
 );
 
 export default defineConfig({
@@ -114,7 +92,7 @@ export default defineConfig({
       },
       serialize: (item) => {
         const pathname = new URL(item.url).pathname.replace(/\/$/, '') || '/';
-        const lastmod = postLastmods.get(pathname) ?? pillarLastmods.get(pathname);
+        const lastmod = postLastmods.get(pathname);
         if (lastmod) item.lastmod = lastmod.toISOString();
         return item;
       },

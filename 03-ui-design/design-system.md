@@ -1,5 +1,9 @@
 # 设计系统
 
+> **已被取代（2026-11-21，v1.3 历史稿）**：现行唯一事实来源是 [design-v2-direction.md](design-v2-direction.md)（v2.2，P1–P4 已实施），本文件仅作历史参考。
+> v2 主要差异：暖白纸底 `#FBFAF7`、全站系统字体栈、单栏 720px / 正文 66ch、页面收敛为 8 个、
+> 删除搜索与目录/面包屑/分享组件、`/architecture` 与 `/performance` 301 到 `/about`、主题仅保留手动切换。
+
 > 阶段 3 · v1.3 · 视觉方向：**暖纸上的编辑体墨色（Editorial ink on warm paper）**
 > 参考实现：`src/styles/global.css` · 视觉样张：`design-preview.html`
 > v1.1 变更（见 [ui-refresh-notes.md](ui-refresh-notes.md)）：收敛字号与间距尺度、删除斜纹引用牌、
@@ -99,7 +103,7 @@
 
 ### Header（页头）
 吸顶，高 64px，背景为 92% 不透明度的 `--bg` 叠加背景模糊，底部一条发丝线。左侧：文字标
-`Jin Lo`，Instrument Serif 24px，后面跟一个朱红句点。中部/右侧：等宽导航链接
+`Waystone AI`，Instrument Serif 24px，后面跟一个朱红句点。中部/右侧：等宽导航链接
 （Writing、Tags、About）、主题切换（日/月图标按钮，44×44）、在 `/blog` 与文章页显示搜索图标。
 移动端：文字标 + 主题切换 + 菜单按钮；面板从页头下方滑出。
 

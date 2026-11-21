@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="touchpoints/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="touchpoints/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="touchpoints/apple-touch-icon-180.png">
+<title>Waystone AI — 品牌标志</title>
+<style>
+  :root{
+    --basalt:#1B1E20;
+    --limestone:#F4F0E6;
+    --copper:#C4633C;
+    --stone:#7A7469;
+    --line:#D9D2C3;
+    --paper:#FBF8F0;
+    --mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+    --serif:Georgia,"Times New Roman","Songti SC",serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--limestone);color:var(--basalt);font-family:var(--sans);line-height:1.65;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit}
+  .wrap{width:min(1160px,calc(100% - 48px));margin:0 auto}
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone)}
+  h1,h2,h3{line-height:1.12;letter-spacing:-.035em;font-weight:650}
+  h1{font-size:clamp(42px,7vw,86px);margin:18px 0 20px;max-width:760px}
+  h2{font-size:clamp(28px,3.2vw,42px);margin:0 0 18px}
+  h3{font-size:18px;margin:0 0 8px;letter-spacing:-.01em}
+  p{margin:0 0 16px;max-width:68ch}
+  .muted{color:var(--stone)}
+  .hero{background:var(--basalt);color:var(--limestone);padding:72px 0 88px;overflow:hidden}
+  .hero .top{display:flex;justify-content:space-between;gap:24px;align-items:center;margin-bottom:72px}
+  .hero .top .kicker{color:#A8A195}
+  .hero-logo{width:min(520px,100%);margin-bottom:34px}
+  .hero-grid{display:grid;grid-template-columns:1.4fr .8fr;gap:56px;align-items:end}
+  .hero-note{max-width:340px;color:#B9B2A5;font-size:15px}
+  .hero-note strong{color:var(--limestone);font-weight:600}
+  .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--copper);vertical-align:middle;margin:0 14px 3px}
+  section{padding:80px 0;border-bottom:1px solid var(--line)}
+  .section-head{display:flex;justify-content:space-between;gap:28px;align-items:flex-start;margin-bottom:44px}
+  .section-head p{max-width:440px;margin:0;color:var(--stone)}
+  .idea{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+  .idea-mark{position:relative;background:var(--paper);border:1px solid var(--line);aspect-ratio:1/1;display:grid;place-items:center;padding:36px;overflow:hidden}
+  .idea-mark::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:32px 32px;opacity:.55}
+  .idea-mark img{position:relative;width:min(250px,74%);filter:drop-shadow(0 18px 26px rgba(27,30,32,.12))}
+  .idea-copy p{font-size:17px;color:#4B4943}
+  .quote{font-family:var(--serif);font-size:clamp(20px,2.2vw,27px);line-height:1.5;color:var(--basalt);margin:24px 0 0;padding-left:22px;border-left:2px solid var(--copper)}
+  .lockup{background:var(--paper);border:1px solid var(--line);padding:38px;display:flex;align-items:center;justify-content:center;min-height:220px}
+  .lockup img{max-height:150px;width:auto}
+  .lockup.dark{background:var(--basalt);border-color:var(--basalt)}
+  .lockup-grid{display:grid;grid-template-columns:1.4fr .8fr;gap:20px}
+  .lockup-grid .stack{display:grid;gap:20px}
+  .asset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .asset{background:var(--paper);border:1px solid var(--line);padding:28px;display:flex;flex-direction:column;gap:18px;min-height:230px}
+  .asset .art{flex:1;display:grid;place-items:center;min-height:120px}
+  .asset .art img{max-height:90px;width:auto}
+  .asset .art.icon img{max-height:130px}
+  .asset small{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
+  .palette{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line)}
+  .swatch{padding:26px;min-height:220px;display:flex;flex-direction:column;justify-content:flex-end}
+  .swatch .chip{width:100%;height:82px;margin-bottom:24px;border:1px solid rgba(0,0,0,.08)}
+  .swatch strong{font-size:15px;display:block}
+  .swatch code{font-family:var(--mono);font-size:12px;color:var(--stone)}
+  .type-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px}
+  .wordmark-large{font-size:clamp(40px,6vw,78px);font-weight:650;letter-spacing:-.045em;line-height:1.1;margin:18px 0 10px}
+  .wordmark-large .ai{color:var(--copper);font-weight:300;font-size:.46em;letter-spacing:.12em;vertical-align:.18em}
+  .type-spec{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:28px}
+  .type-spec div{border-top:1px solid var(--line);padding-top:14px}
+  .type-spec span{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);margin-bottom:6px}
+  .rules{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  .rule{background:var(--paper);border:1px solid var(--line);padding:26px}
+  .rule .label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--copper);margin-bottom:10px}
+  .rule p{margin:0;font-size:15px;color:#4B4943}
+  .clearspace{background:var(--paper);border:1px solid var(--line);padding:34px;display:grid;place-items:center;position:relative}
+  .clearspace .box{border:1px dashed var(--copper);padding:28px;max-width:100%}
+  .clearspace img{width:min(420px,100%)}
+  .clearspace .x{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;color:var(--copper);letter-spacing:.1em}
+  .downloads{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .downloads a{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-decoration:none;transition:background .15s ease}
+  .downloads a:hover{background:var(--paper)}
+  .downloads span{font-size:14px}
+  .downloads small{font-family:var(--mono);font-size:10px;color:var(--stone)}
+  footer{padding:44px 0 60px;display:flex;justify-content:space-between;gap:24px;color:var(--stone);font-size:12px}
+  footer .kicker{color:var(--stone)}
+  @media(max-width:820px){
+    .hero-grid,.idea,.type-grid{grid-template-columns:1fr;gap:34px}
+    .lockup-grid,.asset-grid,.palette,.rules,.downloads{grid-template-columns:1fr 1fr}
+    .palette .swatch{min-height:170px}
+    .section-head{display:block}
+    .section-head p{margin-top:14px}
+  }
+  @media(max-width:560px){
+    .wrap{width:calc(100% - 32px)}
+    .hero{padding:44px 0 60px}
+    .hero .top{margin-bottom:44px}
+    section{padding:56px 0}
+    .lockup-grid,.asset-grid,.palette,.rules,.downloads,.type-spec{grid-template-columns:1fr}
+    .lockup{padding:24px;min-height:160px}
+    footer{display:block}
+    footer p{margin-top:8px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="top">
+      <span class="kicker">Waystone AI · Brand identity</span>
+      <span class="kicker">v1.0 · 2026</span>
+    </div>
+    <div class="hero-grid">
+      <div>
+        <img class="hero-logo" src="waystone-ai-logo-dark.svg" alt="Waystone AI 品牌标志">
+        <h1>为判断留下<br>一块路标。</h1>
+        <p class="hero-note"><strong>Waystone AI</strong> 的标志是一块被凿刻的石碑：W 是品牌首字母，也是路径的折线；铜色圆点标记“就是这里”的坐标。安静、坚固、可被依赖。</p>
+      </div>
+      <div class="muted" style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;line-height:2.1">
+        MARK / W-STONE<br>
+        WORDMARK / BAHNSCHRIFT<br>
+        PALETTE / BASALT · LIMESTONE · COPPER<br>
+        STATUS / PRIMARY
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">01 · Concept</span>
+        <h2>石是基准，点是坐标</h2>
+      </div>
+      <p>Waystone 原指在荒野中为后来者指路的石头。标志把这个意象压缩成两个元素：一块有凿痕的石，和一枚铜色路标点。</p>
+    </div>
+    <div class="idea">
+      <div class="idea-mark">
+        <img src="waystone-ai-icon.svg" alt="Waystone AI 的 W 石碑图形">
+      </div>
+      <div class="idea-copy">
+        <p><strong>W 不是贴上去的字母，而是从石头里凿出来的路径。</strong> 它的四个折角既可以读作品牌首字母，也像一段不断校正方向的行进轨迹。</p>
+        <p>石碑保留了手工凿切的轻微不对称：左侧收窄、顶部斜切、底部略宽。它传递的是耐久与判断力，而不是常见的“未来感”渐变与光效。</p>
+        <p>铜点是整套识别里唯一的信号色。它出现在字标中间，也出现在应用图标右上角，代表 Waystone AI 给出的那个明确坐标。</p>
+        <p class="quote">“A waystone does not walk the path. It makes the path legible.”</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">02 · Lockups</span>
+        <h2>组合与反白</h2>
+      </div>
+      <p>横版用于页眉、名片与导航；反白版用于深色底；字标与图标可独立使用，但不要重新排列内部比例。</p>
+    </div>
+    <div class="lockup-grid">
+      <div class="lockup"><img src="waystone-ai-logo.svg" alt="Waystone AI 横版标志"></div>
+      <div class="stack">
+        <div class="lockup dark"><img src="waystone-ai-logo-dark.svg" alt="Waystone AI 反白横版标志"></div>
+        <div class="lockup"><img src="waystone-ai-wordmark.svg" alt="Waystone AI 字标" style="max-height:82px"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">03 · Assets</span>
+        <h2>三种使用尺度</h2>
+      </div>
+      <p>主标志、字标、印章图标。图标可用于 favicon、应用头像、社交头像与文档页脚。</p>
+    </div>
+    <div class="asset-grid">
+      <div class="asset">
+        <div class="art"><img src="waystone-ai-logo.svg" alt="横版主标志"></div>
+        <small>Primary / horizontal</small>
+        <div class="muted" style="font-size:13px">默认组合，优先使用。</div>
+      </div>
+      <div class="asset">
+        <div class="art"><img src="waystone-ai-wordmark.svg" alt="Waystone AI 字标"></div>
+        <small>Wordmark only</small>
+        <div class="muted" style="font-size:13px">窄空间、联合署名时使用。</div>
+      </div>
+      <div class="asset">
+        <div class="art icon"><img src="waystone-ai-avatar.svg" alt="Waystone AI 应用图标"></div>
+        <small>Stamp / avatar</small>
+        <div class="muted" style="font-size:13px">方形安全区，1:1 头像与 favicon。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">04 · Colour</span>
+        <h2>玄武岩、石灰岩、铜</h2>
+      </div>
+      <p>三种颜色全部取自石与矿物。没有渐变、没有发光；层级由面积、字重与留白建立。</p>
+    </div>
+    <div class="palette">
+      <div class="swatch" style="background:var(--basalt);color:var(--limestone)">
+        <div class="chip" style="background:var(--basalt);border-color:rgba(255,255,255,.14)"></div>
+        <strong>Basalt</strong>
+        <code>#1B1E20</code>
+        <div style="font-size:12px;color:#B9B2A5;margin-top:6px">石碑、主文字</div>
+      </div>
+      <div class="swatch" style="background:var(--paper)">
+        <div class="chip" style="background:var(--limestone)"></div>
+        <strong>Limestone</strong>
+        <code>#F4F0E6</code>
+        <div style="font-size:12px;color:var(--stone);margin-top:6px">纸面、反白字形</div>
+      </div>
+      <div class="swatch" style="background:var(--paper)">
+        <div class="chip" style="background:var(--copper)"></div>
+        <strong>Copper</strong>
+        <code>#C4633C</code>
+        <div style="font-size:12px;color:var(--stone);margin-top:6px">路标点、AI、关键动作</div>
+      </div>
+      <div class="swatch" style="background:var(--paper)">
+        <div class="chip" style="background:var(--stone)"></div>
+        <strong>Stone</strong>
+        <code>#7A7469</code>
+        <div style="font-size:12px;color:var(--stone);margin-top:6px">注释、次级信息</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">05 · Typography</span>
+        <h2>技术感，但不冷</h2>
+      </div>
+      <p>字标使用 Bahnschrift Semibold 并转为轮廓；AI 使用更轻的字重与更宽的 tracking，和主字标拉开层级。</p>
+    </div>
+    <div class="type-grid">
+      <div>
+        <div class="wordmark-large">Waystone <span class="ai">AI</span></div>
+        <p class="muted" style="font-size:13px">Waystone · 600 / AI · 300 / tracking +0.12em</p>
+        <div class="type-spec">
+          <div><span>Display</span>Bahnschrift Semibold</div>
+          <div><span>Fallback</span>Segoe UI / system sans</div>
+          <div><span>Use</span>品牌名、标题、导航</div>
+          <div><span>Don't</span>不要拉伸或加描边</div>
+        </div>
+      </div>
+      <div class="clearspace">
+        <span class="x">CLEAR SPACE = 4× DOT</span>
+        <div class="box"><img src="waystone-ai-logo.svg" alt="标志安全空间示意"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">06 · Usage</span>
+        <h2>四条使用规则</h2>
+      </div>
+      <p>标志的力量来自克制。以下四条比任何新增元素都重要。</p>
+    </div>
+    <div class="rules">
+      <div class="rule">
+        <div class="label">01 / DO</div>
+        <h3>保持石碑的完整轮廓</h3>
+        <p>任何裁切、圆角化或添加描边都会削弱“石头”的体量。需要方形头像时，用完整的印章图标，不要裁切。</p>
+      </div>
+      <div class="rule">
+        <div class="label">02 / DON'T</div>
+        <h3>不要给铜点加光晕</h3>
+        <p>铜点是坐标，不是按钮。禁止发光、投影、渐变或做成可点击的视觉暗示。</p>
+      </div>
+      <div class="rule">
+        <div class="label">03 / DO</div>
+        <h3>深底用反白版</h3>
+        <p>在 Basalt 或更深的摄影背景上，使用反白标志；不要用深色标志叠深色底，也不要用石灰岩色强行反相。</p>
+      </div>
+      <div class="rule">
+        <div class="label">04 / DON'T</div>
+        <h3>不要重排字标</h3>
+        <p>“Waystone · AI”的间距、铜点位置与 AI 的字号已经锁定。不要把它改成竖排、缩写或替换字体。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-bottom:0">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="kicker">07 · Files</span>
+        <h2>可交付文件</h2>
+      </div>
+      <p>SVG 为母版，PNG 为预览与头像导出。字标已转曲，不依赖字体文件。<br><a href="touchpoints/index.html" style="color:var(--copper);text-decoration:none;border-bottom:1px solid currentColor">查看页头、favicon 与社交头像的实尺寸验证 →</a></p>
+    </div>
+    <div class="downloads">
+      <a href="waystone-ai-logo.svg" download><span>横版主标志<small>SVG · 505 × 128</small></span><span>↓</span></a>
+      <a href="waystone-ai-logo-dark.svg" download><span>横版反白标志<small>SVG · 505 × 128</small></span><span>↓</span></a>
+      <a href="waystone-ai-wordmark.svg" download><span>字标<small>SVG · 375 × 92</small></span><span>↓</span></a>
+      <a href="waystone-ai-icon.svg" download><span>W 石碑图标<small>SVG · 190 × 200</small></span><span>↓</span></a>
+      <a href="waystone-ai-avatar.svg" download><span>方形应用图标<small>SVG · 512 × 512</small></span><span>↓</span></a>
+      <a href="waystone-ai-logo-mono.svg" download><span>单色标志<small>SVG · 镂空 W</small></span><span>↓</span></a>
+      <a href="exports/waystone-ai-logo-1600.png" download><span>横版 PNG<small>1600 px</small></span><span>↓</span></a>
+      <a href="exports/waystone-ai-logo-dark-1600.png" download><span>反白横版 PNG<small>1600 px</small></span><span>↓</span></a>
+      <a href="exports/waystone-ai-logo-mono-1600.png" download><span>单色 PNG<small>1600 px</small></span><span>↓</span></a>
+      <a href="exports/waystone-ai-avatar-512.png" download><span>头像 PNG<small>512 px</small></span><span>↓</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <span class="kicker">Waystone AI</span>
+    <p style="margin:6px 0 0">Brand mark / 2026</p>
+  </div>
+  <div style="text-align:right">
+    <span class="kicker">Built as vector</span>
+    <p style="margin:6px 0 0">SVG first · No gradients · No effects</p>
+  </div>
+</footer>
+
+</body>
+</html>

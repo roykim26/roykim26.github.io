@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Jin Lo monogram">
-  <rect width="64" height="64" fill="#16130E" />
-  <text x="10" y="45" font-family="Georgia, 'Times New Roman', serif" font-size="40" fill="#F6F2E9">J</text>
-  <circle cx="47" cy="43" r="4.5" fill="#B23A1B" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 200" role="img" aria-labelledby="title">
+  <title id="title">Waystone AI</title>
+  <g transform="translate(2 2)">
+    <path d="M34 20 L126 14 L164 42 L160 174 L34 180 L22 52 Z" fill="#1B1E20"/>
+    <path d="M50 56 L73 140 L96 96 L119 140 L142 56" fill="none" stroke="#F4F0E6" stroke-width="16" stroke-linejoin="miter" stroke-linecap="square"/>
+  </g>
 </svg>
