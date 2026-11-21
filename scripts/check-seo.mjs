@@ -118,8 +118,8 @@ const read = async (file) => {
   }
 };
 
-const sitemap = await read('sitemap-index.xml');
-if (!sitemap.includes('<sitemapindex')) failures.push('sitemap-index.xml missing or invalid');
+const sitemap = await read('sitemap.xml');
+if (!sitemap.includes('<urlset')) failures.push('sitemap.xml missing or invalid');
 const sitemapFiles = (await walk(dist)).filter((file) => /sitemap.*\.xml$/.test(file));
 const sitemapBody = (await Promise.all(sitemapFiles.map((file) => readFile(file, 'utf8')))).join('\n');
 if (sitemapBody.includes('/og/')) failures.push('sitemap contains OG assets');
