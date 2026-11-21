@@ -56,6 +56,26 @@ const missing = [];
 const brokenAnchors = [];
 let checked = 0;
 
+// 旧地址冒烟检查：GitHub Pages 不执行 public/_redirects，这些路径必须由构建产物
+// 提供 meta refresh 页面。清单写死在这里，才能在构建配置被改动时报警。
+const legacyPaths = [
+  ['/architecture', '/about'],
+  ['/performance', '/about'],
+  ['/feed', '/rss.xml'],
+  ['/blog/', '/blog'],
+];
+
+for (const [from, to] of legacyPaths) {
+  const target = await resolveTarget(from);
+  if (!target) {
+    missing.push({ page: '(legacy)', ref: `${from} -> ${to}` });
+    continue;
+  }
+  const html = await readFile(target, 'utf8');
+  const refresh = html.match(/http-equiv="refresh" content="0;url=([^"]+)"/)?.[1];
+  if (refresh !== to) missing.push({ page: '(legacy)', ref: `${from} -> ${to} (refresh: ${refresh ?? 'none'})` });
+}
+
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
   const page = `/${path.relative(dist, file).replace(/\\/g, '/')}`;
@@ -87,7 +107,10 @@ for (const file of htmlFiles) {
   }
 }
 
-console.log(`[links] checked ${checked} internal references across ${htmlFiles.length} pages`);
+console.log(
+  `[links] checked ${checked} internal references across ${htmlFiles.length} pages, ` +
+    `${legacyPaths.length} legacy redirects`,
+);
 
 if (missing.length || brokenAnchors.length) {
   for (const item of missing) console.error(`  MISSING  ${item.page} -> ${item.ref}`);
