@@ -58,11 +58,13 @@ let checked = 0;
 
 // 旧地址冒烟检查：GitHub Pages 不执行 public/_redirects，这些路径必须由构建产物
 // 提供 meta refresh 页面。清单写死在这里，才能在构建配置被改动时报警。
+// /blog/ 不在此列：它由 public/blog/index.html 的静态 stub 兜底，不是 astro.config
+// 生成的重定向。若把它写回 astro.config 的 redirects，构建会把重定向写进
+// blog.html 并覆盖真实列表页，形成 /blog 自引用死循环。
 const legacyPaths = [
   ['/architecture', '/about'],
   ['/performance', '/about'],
   ['/feed', '/rss.xml'],
-  ['/blog/', '/blog'],
 ];
 
 for (const [from, to] of legacyPaths) {

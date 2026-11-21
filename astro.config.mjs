@@ -2,6 +2,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { unified } from '@astrojs/markdown-remark';
 
 // 规范域名（canonical origin）。正式域名确定后，请改动此处（以及 src/lib/site.ts 中
 // 对应的值）。meta、feed 和 sitemap 中的所有绝对 URL 都由此派生。
@@ -81,8 +82,11 @@ const REDIRECTS = {
   '/architecture': '/about',
   '/performance': '/about',
   '/feed': '/rss.xml',
-  '/blog/': '/blog',
 };
+// 注意：不要再把 '/blog/' 加回这里。build.format = 'file' 会把这条重定向写成
+// dist/blog.html，正好覆盖 src/pages/blog/index.astro 的真实列表页，形成
+// /blog -> /blog 的自引用死循环。带尾斜杠的入口由 public/blog/index.html
+// 的 meta refresh 兜底（noindex，canonical 指向 /blog）。
 const REDIRECT_PATHS = new Set(Object.keys(REDIRECTS).map((p) => p.replace(/\/$/, '')));
 
 export default defineConfig({
@@ -111,7 +115,9 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    rehypePlugins: [rehypeTaskListA11y],
+    // Astro 7 起，插件通过 markdown.processor 传入；旧的 markdown.rehypePlugins
+    // 已废弃，会在构建时打印弃用警告。
+    processor: unified({ rehypePlugins: [rehypeTaskListA11y] }),
     shikiConfig: {
       // 两种主题下都使用同一块深色代码底色：有意为之，对比度高，避免双主题切换闪烁。
       // 主题选 github-dark-high-contrast：vitesse-dark 的注释色在本站代码底色上只有
