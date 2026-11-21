@@ -35,8 +35,10 @@
   --font-mono: ui-monospace, SFMono-Regular, "Cascadia Mono", Consolas,
     "Courier New", "Liberation Mono", monospace;
 
-  --container: 720px;
-  --measure: 66ch;
+  /* 桌面外壳宽度：1536 视口下左右各留约 228px（≈15%）。
+     正文列另由 --measure 控制，保持 60–80 字符的可读行长。 */
+  --container: 1080px;
+  --measure: 64ch;
   --radius: 0;
   --header-h: 56px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -1945,11 +1947,19 @@ html[data-theme="dark"] .search-dialog::backdrop {
   text-decoration: underline;
 }
 
-/* 页面通用页头 */
+/* 页面通用页头：与列表同宽（铺满 1080 外壳），让标题、说明和右侧链接
+   落在外壳的左右边缘，与下方的列表行共用同一栅格。 */
 .page-head {
   padding: 64px 0 32px;
-  max-width: var(--measure);
+  max-width: none;
   border-bottom: 0;
+}
+
+/* 纯阅读页（About / Newsletter）没有列表行，页头改用居中正文列，
+   与下方 .about-body / .newsletter-body 左边缘对齐。 */
+.page-head--column {
+  max-width: var(--measure);
+  margin-inline: auto;
 }
 
 .page-head h1 {
@@ -2110,6 +2120,20 @@ html[data-theme="dark"] .search-dialog::backdrop {
   line-height: 1.6;
 }
 
+/* 首页：宽屏时介绍区左右两栏，避免 h1 独占一整行、右侧大片空白 */
+@media (min-width: 1024px) {
+  .home-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 46ch;
+    gap: 16px 64px;
+    align-items: end;
+  }
+
+  .home-lead {
+    margin-top: 0;
+  }
+}
+
 .home-list {
   border-top: 1px solid var(--rule);
 }
@@ -2121,7 +2145,7 @@ html[data-theme="dark"] .search-dialog::backdrop {
 
 /* 标签 */
 .tag-index {
-  max-width: var(--measure);
+  max-width: none;
   border-top: 1px solid var(--rule);
 }
 
@@ -2399,7 +2423,8 @@ a.tag-pill:hover {
 
 /* 订阅页 */
 .newsletter-body {
-  max-width: 46ch;
+  max-width: var(--measure);
+  margin-inline: auto;
 }
 
 .newsletter-form {
@@ -2423,6 +2448,7 @@ a.tag-pill:hover {
 /* 关于 */
 .about-body {
   max-width: var(--measure);
+  margin-inline: auto;
 }
 
 .about-body h2 {

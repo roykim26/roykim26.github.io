@@ -201,13 +201,15 @@
 <div class="wrap">
 
   <header>
-    <p class="kicker">03-ui-design · UI preview · 2026-11-13</p>
+    <p class="kicker">03-ui-design · UI preview · 2026-11-21</p>
     <h1>修复后的<em>界面</em>截图</h1>
     <p class="lede">
       20 张整页截图，覆盖 5 个页面 × 亮色/暗色 × 桌面/移动。取自生产构建
       （<code>npm run build</code> + <code>astro preview</code>），已包含对比度修正：
       控件边框改用 <code>--control-border</code>、按钮悬停文字改纸色、色带内焦点环改色带前景色、
       代码高亮换高对比主题。本页不依赖构建产物，直接双击即可打开。
+      2026-11-21 的宽度修复后，桌面外壳由 720px 加宽到 <b>1080px</b>、正文列 64ch 居中，
+      桌面 10 张截图已按新栅格重拍；移动端布局未变，沿用原图。
     </p>
     <ul class="meta">
       <li><b>5</b> 页面</li>
@@ -243,13 +245,13 @@
         <a class="shot" href="screenshots/home-desktop-light.png" target="_blank" rel="noopener">
           <img src="screenshots/home-desktop-light.png" alt="首页，亮色主题，桌面 1440px">
         </a>
-        <figcaption>home-desktop-light · 1440×2687</figcaption>
+        <figcaption>home-desktop-light · 1440×1879</figcaption>
       </figure>
       <figure>
         <a class="shot dark" href="screenshots/home-desktop-dark.png" target="_blank" rel="noopener">
           <img src="screenshots/home-desktop-dark.png" alt="首页，暗色主题，桌面 1440px">
         </a>
-        <figcaption>home-desktop-dark · 1440×2687</figcaption>
+        <figcaption>home-desktop-dark · 1440×1879</figcaption>
       </figure>
       <figure>
         <a class="shot" href="screenshots/home-mobile-light.png" target="_blank" rel="noopener">
@@ -272,13 +274,13 @@
         <a class="shot" href="screenshots/blog-desktop-light.png" target="_blank" rel="noopener">
           <img src="screenshots/blog-desktop-light.png" alt="文章列表，亮色主题，桌面 1440px">
         </a>
-        <figcaption>blog-desktop-light · 1440×2394</figcaption>
+        <figcaption>blog-desktop-light · 1440×1898</figcaption>
       </figure>
       <figure>
         <a class="shot dark" href="screenshots/blog-desktop-dark.png" target="_blank" rel="noopener">
           <img src="screenshots/blog-desktop-dark.png" alt="文章列表，暗色主题，桌面 1440px">
         </a>
-        <figcaption>blog-desktop-dark · 1440×2394</figcaption>
+        <figcaption>blog-desktop-dark · 1440×1898</figcaption>
       </figure>
       <figure>
         <a class="shot" href="screenshots/blog-mobile-light.png" target="_blank" rel="noopener">
@@ -301,13 +303,13 @@
         <a class="shot" href="screenshots/post-desktop-light.png" target="_blank" rel="noopener">
           <img src="screenshots/post-desktop-light.png" alt="文章详情，亮色主题，桌面 1440px">
         </a>
-        <figcaption>post-desktop-light · 1440×7415</figcaption>
+        <figcaption>post-desktop-light · 1440×6315</figcaption>
       </figure>
       <figure>
         <a class="shot dark" href="screenshots/post-desktop-dark.png" target="_blank" rel="noopener">
           <img src="screenshots/post-desktop-dark.png" alt="文章详情，暗色主题，桌面 1440px">
         </a>
-        <figcaption>post-desktop-dark · 1440×7415</figcaption>
+        <figcaption>post-desktop-dark · 1440×6315</figcaption>
       </figure>
       <figure>
         <a class="shot" href="screenshots/post-mobile-light.png" target="_blank" rel="noopener">
@@ -330,13 +332,13 @@
         <a class="shot" href="screenshots/about-desktop-light.png" target="_blank" rel="noopener">
           <img src="screenshots/about-desktop-light.png" alt="About 页面，亮色主题，桌面 1440px">
         </a>
-        <figcaption>about-desktop-light · 1440×2062</figcaption>
+        <figcaption>about-desktop-light · 1440×2883</figcaption>
       </figure>
       <figure>
         <a class="shot dark" href="screenshots/about-desktop-dark.png" target="_blank" rel="noopener">
           <img src="screenshots/about-desktop-dark.png" alt="About 页面，暗色主题，桌面 1440px">
         </a>
-        <figcaption>about-desktop-dark · 1440×2062</figcaption>
+        <figcaption>about-desktop-dark · 1440×2883</figcaption>
       </figure>
       <figure>
         <a class="shot" href="screenshots/about-mobile-light.png" target="_blank" rel="noopener">
@@ -359,13 +361,13 @@
         <a class="shot" href="screenshots/newsletter-desktop-light.png" target="_blank" rel="noopener">
           <img src="screenshots/newsletter-desktop-light.png" alt="Newsletter 页面，亮色主题，桌面 1440px">
         </a>
-        <figcaption>newsletter-desktop-light · 1440×1553</figcaption>
+        <figcaption>newsletter-desktop-light · 1440×900</figcaption>
       </figure>
       <figure>
         <a class="shot dark" href="screenshots/newsletter-desktop-dark.png" target="_blank" rel="noopener">
           <img src="screenshots/newsletter-desktop-dark.png" alt="Newsletter 页面，暗色主题，桌面 1440px">
         </a>
-        <figcaption>newsletter-desktop-dark · 1440×1553</figcaption>
+        <figcaption>newsletter-desktop-dark · 1440×900</figcaption>
       </figure>
       <figure>
         <a class="shot" href="screenshots/newsletter-mobile-light.png" target="_blank" rel="noopener">
@@ -384,10 +386,10 @@
   </section>
 
   <footer>
-    <p>取图方式：Chrome headless + DevTools Protocol，1440×1000 / 390×844 视口、整页捕获、设备像素比 1；
-      截图前注入 <code>*{transition:none}</code> 并等待字体加载，暗色通过 <code>data-theme="dark"</code> 切换。</p>
-    <p>截图目录：<code>03-ui-design/screenshots/</code> · 命名规则：<code>页面-断点-主题.png</code>。</p>
-    <p>对比度核算见 <code>03-ui-design/contrast-audit.md</code>；设计规范见 <code>03-ui-design/design-system.md</code>；
+    <p>取图方式：Chrome headless + DevTools Protocol，桌面 1440×900、移动 390×844 视口、整页捕获、设备像素比 1；
+      暗色通过 <code>data-theme="dark"</code> 切换。桌面内容列宽 1080px，正文列 64ch（约 587px）居中。</p>
+    <p>截图目录：<code>03-ui-design/screenshots/</code> · 命名规则：<code>页面-断点-主题.png</code>。移动端仍为 390px 原图（<code>--container</code> 变化不影响 ≤640px）。</p>
+    <p>对比度核算见 <code>03-ui-design/contrast-audit-v2.md</code>；设计规范见 <code>03-ui-design/design-v2-direction.md</code>（v2.3）；
       移动端长文专项见 <code>03-ui-design/mobile-review.md</code>。</p>
   </footer>
 
