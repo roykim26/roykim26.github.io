@@ -93,7 +93,7 @@ A rollout plan is a product, with users, failure modes, and a support story. Our
 
 The rollout sequence matters less than the ability to stop. We cut over writes on a Tuesday morning and reverted one route by lunch. Nobody noticed, which is the highest praise a migration can receive.
 
-The rewrite did not end. The old system still serves that twice-yearly batch job, and I suspect it will outlive the new service. That is fine. The win was not replacing the monolith; it was learning which parts of it were worth keeping, and building a seam that let us decide one route at a time. If you take one thing from this, take the seam. The new code will be rewritten again. A good seam survives.
+The rewrite did not end. The old system still serves that twice-yearly batch job, and I suspect it will outlive the new service. That is fine. The win was not replacing the monolith; it was learning which parts of it were worth keeping, and building a seam that let us decide one route at a time. The mechanics of the move itself — the coexistence window, the divergence checks, the rollback expiry date — are in [The Migration Nobody Noticed](/blog/the-migration-nobody-noticed). If you take one thing from this, take the seam. The new code will be rewritten again. A good seam survives.
 
 This essay belongs with the other notes on [architecture](/tags/architecture).
 
