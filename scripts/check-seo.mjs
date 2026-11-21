@@ -9,7 +9,7 @@ import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const dist = path.join(process.cwd(), 'dist');
-const origin = 'https://jinlo.dev';
+const origin = 'https://blog.waystoneai.online';
 
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
