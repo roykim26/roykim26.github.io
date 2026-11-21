@@ -14,7 +14,10 @@ export const site = {
     role: 'Engineering notes',
     bio: 'Field notes on architecture, performance, and the craft of building systems that last.',
     location: 'Writing for readers everywhere',
-    email: 'hello@blog.waystoneai.online',
+    // blog.waystoneai.online 是 CNAME 到 GitHub Pages，无 MX 记录。
+    // 根域 waystoneai.online 已走 Cloudflare Email Routing catch-all，
+    // → usergpt2501@gmail.com，所以改收件域。
+    email: 'hello@waystoneai.online',
     // TODO: 填入真实 GitHub / X / LinkedIn 主页后，会自动用于 About 页 rel="me" 与 Organization.sameAs。
     github: '',
     x: '',
