@@ -13,6 +13,12 @@ const aboutSchema = [
     mainEntity: { '@id': `${site.url}/about#organization` },
   },
 ];
+
+const elsewhere = [
+  { label: 'GitHub', href: site.author.github },
+  { label: 'X', href: site.author.x },
+  { label: 'LinkedIn', href: site.author.linkedin },
+].filter((link) => link.href);
 ---
 <BaseLayout
   title="About — Waystone AI"
@@ -110,6 +116,14 @@ const aboutSchema = [
         </ul>
 
         <h2>Elsewhere</h2>
+        <p>
+          {elsewhere.map((link, index) => (
+            <>
+              {index > 0 && <span aria-hidden="true"> · </span>}
+              <a href={link.href} rel="me nofollow noopener noreferrer">{link.label}</a>
+            </>
+          ))}
+        </p>
         <p>
           The best way to reach me is email: <a href={`mailto:${site.author.email}`}>{site.author.email}</a>.
           I read everything and reply to most of it, eventually. Found an error? Say so;

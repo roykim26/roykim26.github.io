@@ -18,16 +18,15 @@ export const site = {
     // 根域 waystoneai.online 已走 Cloudflare Email Routing catch-all，
     // → usergpt2501@gmail.com，所以改收件域。
     email: 'hello@waystoneai.online',
-    // TODO: 填入真实 GitHub / X / LinkedIn 主页后，会自动用于 About 页 rel="me" 与 Organization.sameAs。
-    github: '',
-    x: '',
+    // 用于 About 页 rel="me" 与 Organization.sameAs；留空的项不会渲染。
+    github: 'https://github.com/roykim26',
+    x: 'https://x.com/Kim242024',
     linkedin: '',
   },
   newsletter: {
-    // TODO: 替换为你的服务商提供的 embed endpoint，例如
-    // 'https://buttondown.com/api/emails/embed-subscribe/your-handle'
-    // 空字符串会退化为 mailto 链接，而不是渲染一个损坏的表单。
-    endpoint: '',
+    // Buttondown embed endpoint；表单以原生 POST 提交，无第三方脚本。
+    // 置空字符串会退化为 mailto 链接。
+    endpoint: 'https://buttondown.com/api/emails/embed-subscribe/waystoneai',
     cadence: 'Every other Tuesday',
     privacy: 'No tracking pixels, no resale, one-click unsubscribe.',
   },
