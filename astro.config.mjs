@@ -100,7 +100,7 @@ const pillarLastmods = new Map(
 );
 
 export default defineConfig({
-  site: 'https://jinlo.dev',
+  site: 'https://blog.waystoneai.online',
   trailingSlash: 'never',
   build: {
     format: 'file',

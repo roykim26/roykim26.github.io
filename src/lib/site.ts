@@ -10,13 +10,13 @@ export const site = {
   tagline: 'Field notes on software that survives contact with reality.',
   description:
     'Long-form essays on architecture, performance, and the craft of building systems that last. Written by a working software engineer for readers everywhere.',
-  url: 'https://jinlo.dev',
+  url: 'https://blog.waystoneai.online',
   author: {
     name: 'Jin Lo',
     role: 'Software engineer & writer',
     bio: 'I build and maintain backend systems for a living. I write about the decisions that only reveal their cost years later — and the ones that quietly hold everything together.',
     location: 'Shanghai · writing for readers everywhere',
-    email: 'hello@jinlo.dev',
+    email: 'hello@blog.waystoneai.online',
     // TODO: 填入真实 GitHub / X / LinkedIn 主页后，会自动用于 About 页 rel="me" 与 Person.sameAs。
     github: '',
     x: '',
