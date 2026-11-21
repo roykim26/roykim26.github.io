@@ -122,22 +122,7 @@ export default defineConfig({
   build: {
     format: 'file',
   },
-  integrations: [
-    sitemap({
-      filter: (page) => {
-        if (page.includes('/og/') || page.endsWith('/404')) return false;
-        const pathname = new URL(page).pathname.replace(/\/$/, '');
-        if (REDIRECT_PATHS.has(pathname)) return false;
-        return !unindexedTagPaths.has(pathname);
-      },
-      serialize: (item) => {
-        const pathname = new URL(item.url).pathname.replace(/\/$/, '') || '/';
-        const lastmod = postLastmods.get(pathname);
-        if (lastmod) item.lastmod = lastmod.toISOString();
-        return item;
-      },
-    }),
-  ],
+  integrations: [],
   markdown: {
     // Astro 7 起，插件通过 markdown.processor 传入；旧的 markdown.rehypePlugins
     // 已废弃，会在构建时打印弃用警告。
