@@ -22,6 +22,30 @@ function rehypeTaskListA11y() {
   };
 }
 
+const SITE_ORIGIN = 'https://blog.waystoneai.online';
+
+// 正文里指向站外的链接统一加 rel="nofollow"：引用、赞助合作、导流链接都不再传递
+// 权重。站内绝对链接（canonical 主机）和锚点保持不变。已有 rel 会被保留并合并，
+// 例如 sponsored 链接原本的 "sponsored nofollow noopener" 不会被覆盖。
+function rehypeExternalNofollow() {
+  return (tree) => {
+    const walk = (node) => {
+      if (node.type === 'element' && node.tagName === 'a') {
+        const href = node.properties?.href;
+        if (typeof href === 'string' && /^https?:\/\//i.test(href) && !href.startsWith(SITE_ORIGIN)) {
+          const tokens = String(node.properties.rel ?? '')
+            .split(/\s+/)
+            .filter(Boolean);
+          if (!tokens.includes('nofollow')) tokens.push('nofollow');
+          node.properties.rel = tokens.join(' ');
+        }
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
 // 读取已发布文章的 slug → 最后修改日期，以及每个标签的文章数。
 // 只读取 frontmatter，不引入 Astro 内容层，避免配置加载顺序问题。
 async function readPostIndex() {
@@ -117,7 +141,7 @@ export default defineConfig({
   markdown: {
     // Astro 7 起，插件通过 markdown.processor 传入；旧的 markdown.rehypePlugins
     // 已废弃，会在构建时打印弃用警告。
-    processor: unified({ rehypePlugins: [rehypeTaskListA11y] }),
+    processor: unified({ rehypePlugins: [rehypeTaskListA11y, rehypeExternalNofollow] }),
     shikiConfig: {
       // 两种主题下都使用同一块深色代码底色：有意为之，对比度高，避免双主题切换闪烁。
       // 主题选 github-dark-high-contrast：vitesse-dark 的注释色在本站代码底色上只有
