@@ -34,6 +34,8 @@ const indexableTagPages = [];
 
 for (const file of files) {
   const html = await readFile(file, 'utf8');
+  // 旧地址的兼容跳转页（meta refresh + noindex）不是内容页，不参与 SEO 不变量检查。
+  if (html.includes('http-equiv="refresh"')) continue;
   const page = `/${path.relative(dist, file).replace(/\\/g, '/')}`;
   const is404 = page === '/404.html';
   const fail = (message) => failures.push(`${page}: ${message}`);

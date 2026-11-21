@@ -77,9 +77,20 @@ const unindexedTagPaths = new Set(
     .map(([tag]) => `/tags/${tag}`),
 );
 
+const REDIRECTS = {
+  '/architecture': '/about',
+  '/performance': '/about',
+  '/feed': '/rss.xml',
+  '/blog/': '/blog',
+};
+const REDIRECT_PATHS = new Set(Object.keys(REDIRECTS).map((p) => p.replace(/\/$/, '')));
+
 export default defineConfig({
   site: 'https://blog.waystoneai.online',
   trailingSlash: 'never',
+  // 旧地址的兼容跳转。GitHub Pages 不读取 public/_redirects，静态站只能生成
+  // meta refresh 页面；返回 200 + canonical，而不是 301。
+  redirects: REDIRECTS,
   build: {
     format: 'file',
   },
@@ -88,6 +99,7 @@ export default defineConfig({
       filter: (page) => {
         if (page.includes('/og/') || page.endsWith('/404')) return false;
         const pathname = new URL(page).pathname.replace(/\/$/, '');
+        if (REDIRECT_PATHS.has(pathname)) return false;
         return !unindexedTagPaths.has(pathname);
       },
       serialize: (item) => {
