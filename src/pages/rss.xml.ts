@@ -22,7 +22,7 @@ export async function GET(context: APIContext) {
       link: absoluteUrl(`/blog/${post.id}`),
       categories: [...post.data.tags],
       content: marked.parse(post.body ?? '', { async: false }) as string,
-      customData: `<language>en</language><readingTime>${readingTime(post)} min</readingTime>`,
+      customData: `<readingTime>${readingTime(post)} min</readingTime>`,
     })),
     customData: `<language>en</language><copyright>© ${new Date().getFullYear()} ${site.author.name}</copyright><lastBuildDate>${lastBuildDate}</lastBuildDate>`,
   });
