@@ -19,7 +19,7 @@ const endpoint = site.newsletter.endpoint;
 
     <div class="newsletter-body">
       {endpoint ? (
-        <form class="newsletter-form" action={endpoint} method="post" target="_blank">
+        <form class="newsletter-form" action={endpoint} method="post" target="_blank" rel="noopener noreferrer">
           <div class="field">
             <label for="newsletter-email">Email address</label>
             <input

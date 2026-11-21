@@ -40,6 +40,26 @@ const sameAs: string[] = [
   site.author.linkedin,
 ].filter((url) => url.length > 0);
 
+// 结构化数据经 set:html 原样注入 <script>，JSON.stringify 不转义 </script>。
+// 这里把 JSON 中可能提前闭合标签的字符转成等价的 \u 转义，防止 frontmatter 里的
+// 标题/描述带出标签时把数据块变成可执行脚本。
+const escapeJsonForHtml = (value: unknown): string =>
+  JSON.stringify(value)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+
+// 线上托管（GitHub Pages）不支持自定义响应头，_headers / nginx 里的 CSP 不会生效。
+// 因此这里用 meta 兜底：meta 不支持 frame-ancestors / report-uri / sandbox，
+// 所以单独给一份不含这些指令的策略，避免浏览器在控制台报“指令被忽略”。
+// 与 public/_headers、nginx.conf、netlify.toml、vercel.json 中的策略保持一致。
+const contentSecurityPolicy =
+  "default-src 'self'; object-src 'none'; base-uri 'self'; " +
+  "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
+  "img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self' https:";
+
 const baseSchema = [
   {
     '@type': 'WebSite',
@@ -75,6 +95,8 @@ const baseSchema = [
 ];
 ---
 <meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content={contentSecurityPolicy} />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
@@ -112,7 +134,7 @@ const baseSchema = [
 
 <script
   type="application/ld+json"
-  set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': [...baseSchema, ...schema] })}
+  set:html={escapeJsonForHtml({ '@context': 'https://schema.org', '@graph': [...baseSchema, ...schema] })}
 />
 
 <script is:inline>

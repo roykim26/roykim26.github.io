@@ -1,9 +1,15 @@
+# 注意：GitHub Pages 会忽略本文件（线上当前由 GitHub Pages 托管，实测无任何安全头）。
+# 本文件在 Netlify / Cloudflare Pages 等支持 _headers 的平台上生效。
+# 完整安全头清单，请与 netlify.toml、vercel.json、nginx.conf 保持一致。
 /*
+  Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https:
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https:
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
